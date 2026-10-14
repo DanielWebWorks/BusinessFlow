@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | BusinessFlow</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --white: #fff;
+            --text: #172033;
+            --muted: #788399;
+            --line: #e8ecf3;
+            --blue: #5b5ce2;
+            --blue-light: #eeeeff;
+            --green: #169b72;
+            --orange: #e79b35;
+            --red: #e35c69;
+            --nav: #171a2b
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex
+        }
+
+        .sidebar {
+            width: 245px;
+            background: var(--nav);
+            color: #aab0c4;
+            padding: 27px 17px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 0 10px 34px;
+            color: white;
+            font-size: 21px;
+            font-weight: 800
+        }
+
+        .brand-mark {
+            width: 35px;
+            height: 35px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #8d8aff, #5555dc);
+            display: grid;
+            place-items: center;
+            color: white
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            color: #747d98;
+            padding: 0 12px;
+            margin: 17px 0 10px
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: #aab0c4;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 3px 0
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #292c43;
+            color: white
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 17px
+        }
+
+        .sidebar-bottom {
+            margin-top: auto
+        }
+
+        .help-card {
+            padding: 16px;
+            background: #23263c;
+            border-radius: 12px;
+            margin: 20px 2px 10px
+        }
+
+        .help-card strong {
+            color: white;
+            font-size: 13px
+        }
+
+        .help-card p {
+            font-size: 11px;
+            line-height: 1.6;
+            color: #aab0c4
+        }
+
+        .help-card button {
+            background: #4546c4;
+            border: 0;
+            color: white;
+            padding: 9px 12px;
+            border-radius: 7px;
+            font-size: 11px
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 28px 34px 40px
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 30px
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 8px
+        }
+
+        h1 {
+            font-size: 27px;
+            letter-spacing: -.7px;
+            margin: 0;
+            font-weight: 800
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 8px 0 0
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .icon-button {
+            height: 40px;
+            width: 40px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: #59657a
+        }
+
+        .avatar {
+            width: 39px;
+            height: 39px;
+            border-radius: 50%;
+            background: #e7e6ff;
+            color: #5654ce;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .primary {
+            border: 0;
+            border-radius: 9px;
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 5px 12px #5b5ce226
+        }
+
+        .primary:hover {
+            background: #4849ca
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 24px
+        }
+
+        .stat,
+        .panel {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 14px
+        }
+
+        .stat {
+            padding: 20px
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .stat-icon {
+            height: 35px;
+            width: 35px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-size: 17px
+        }
+
+        .purple {
+            background: #efedff;
+            color: #6260dc
+        }
+
+        .mint {
+            background: #e2f8ef;
+            color: #15986f
+        }
+
+        .peach {
+            background: #fff0e2;
+            color: #dc8b30
+        }
+
+        .rose {
+            background: #ffe9ed;
+            color: #d95469
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 800;
+            margin: 15px 0 7px;
+            letter-spacing: -.6px
+        }
+
+        .stat-foot {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .positive {
+            color: var(--green);
+            font-weight: 700
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            background: #eceff5;
+            padding: 4px;
+            border-radius: 10px
+        }
+
+        .tab {
+            border: 0;
+            background: transparent;
+            padding: 9px 13px;
+            border-radius: 7px;
+            color: #788399;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 2px 5px #1720330a
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .search {
+            position: relative
+        }
+
+        .search input {
+            width: 225px;
+            padding: 11px 12px 11px 35px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: white;
+            outline: none;
+            font-size: 12px
+        }
+
+        .search input:focus,
+        select:focus {
+            border-color: #9998f3
+        }
+
+        .search span {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            color: #8993a7
+        }
+
+        select {
+            padding: 11px 12px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: white;
+            color: #68748a;
+            font-size: 12px;
+            outline: none
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px
+        }
+
+        .project-card {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 20px;
+            min-width: 0;
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 26px #1720330b
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px
+        }
+
+        .project-symbol {
+            height: 45px;
+            width: 45px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            font-weight: 800
+        }
+
+        .symbol-blue {
+            background: #e9edff;
+            color: #5667db
+        }
+
+        .symbol-green {
+            background: #e1f7ee;
+            color: #169b72
+        }
+
+        .symbol-orange {
+            background: #fff0e0;
+            color: #d98b2c
+        }
+
+        .symbol-pink {
+            background: #ffe8ef;
+            color: #d6577b
+        }
+
+        .symbol-violet {
+            background: #f0e8ff;
+            color: #8659d4
+        }
+
+        .symbol-cyan {
+            background: #e2f7fb;
+            color: #2094a7
+        }
+
+        .more {
+            border: 0;
+            background: transparent;
+            color: #8b94a6;
+            font-size: 22px;
+            line-height: 1
+        }
+
+        .project-title {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 18px 0 7px
+        }
+
+        .project-desc {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--muted);
+            min-height: 38px;
+            margin: 0 0 15px
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 20px;
+            padding: 6px 9px;
+            font-size: 10px;
+            font-weight: 800
+        }
+
+        .status:before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor
+        }
+
+        .status-progress {
+            background: #e9edff;
+            color: #575bd1
+        }
+
+        .status-review {
+            background: #fff2df;
+            color: #c58525
+        }
+
+        .status-complete {
+            background: #e1f7ec;
+            color: #138c66
+        }
+
+        .status-planned {
+            background: #f0e8ff;
+            color: #8556ca
+        }
+
+        .card-divider {
+            height: 1px;
+            background: var(--line);
+            margin: 18px 0
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 9px
+        }
+
+        .project-meta strong {
+            color: #3a455a;
+            font-size: 11px
+        }
+
+        .progress-track {
+            height: 6px;
+            background: #edf0f6;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 17px
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: var(--blue)
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px
+        }
+
+        .avatars {
+            display: flex;
+            align-items: center
+        }
+
+        .mini-avatar {
+            width: 27px;
+            height: 27px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 8px;
+            font-weight: 800;
+            margin-left: -6px;
+            background: #e5e8ff;
+            color: #4f55bb
+        }
+
+        .mini-avatar:first-child {
+            margin-left: 0
+        }
+
+        .due-date {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .due-date strong {
+            color: #465168
+        }
+
+        .empty {
+            grid-column: 1/-1;
+            text-align: center;
+            background: white;
+            border: 1px dashed #d9deea;
+            border-radius: 14px;
+            padding: 55px 20px;
+            color: var(--muted)
+        }
+
+        .empty strong {
+            display: block;
+            color: var(--text);
+            font-size: 15px;
+            margin-bottom: 8px
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #11162980;
+            z-index: 5;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .overlay.open {
+            display: flex
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow: auto;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 20px 60px #0002
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px
+        }
+
+        .modal-head h2 {
+            font-size: 20px;
+            margin: 0
+        }
+
+        .close {
+            border: 0;
+            background: #f0f2f7;
+            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            font-size: 18px
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .field.full {
+            grid-column: 1/-1
+        }
+
+        .field label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5d687d
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            outline: none;
+            font-size: 12px;
+            background: white
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 70px
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px
+        }
+
+        .secondary {
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 9px;
+            padding: 11px 15px;
+            font-size: 12px;
+            color: #59657a
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: #20243a;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            box-shadow: 0 8px 25px #0002;
+            display: none;
+            z-index: 10
+        }
+
+        .toast.show {
+            display: block
+        }
+
+        .mobile-menu {
+            display: none
+        }
+
+        @media(max-width:1150px) {
+            .project-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .main {
+                padding: 25px
+            }
+        }
+
+        @media(max-width:800px) {
+            .sidebar {
+                width: 205px
+            }
+
+            .main {
+                padding: 22px 18px
+            }
+        }
+
+        @media(max-width:650px) {
+            .app {
+                display: block
+            }
+
+            .sidebar {
+                display: none;
+                position: fixed;
+                z-index: 4;
+                inset: 0 auto 0 0;
+                width: 250px;
+                overflow-y: auto
+            }
+
+            .sidebar.open {
+                display: flex
+            }
+
+            .main {
+                padding: 18px 14px
+            }
+
+            .topbar {
+                align-items: flex-start
+            }
+
+            .top-actions {
+                gap: 7px
+            }
+
+            .top-actions .icon-button {
+                display: none
+            }
+
+            h1 {
+                font-size: 23px
+            }
+
+            .mobile-menu {
+                display: inline-grid;
+                place-items: center;
+                width: 38px;
+                height: 38px;
+                border: 1px solid var(--line);
+                border-radius: 9px;
+                background: white;
+                margin-right: 9px
+            }
+
+            .heading-row {
+                display: flex;
+                align-items: center
+            }
+
+            .topbar {
+                gap: 10px
+            }
+
+            .top-actions .primary {
+                padding: 11px 12px
+            }
+
+            .stats {
+                gap: 10px
+            }
+
+            .stat {
+                padding: 14px
+            }
+
+            .stat-value {
+                font-size: 23px
+            }
+
+            .stat-top {
+                font-size: 11px
+            }
+
+            .stat-icon {
+                width: 30px;
+                height: 30px
+            }
+
+            .toolbar {
+                align-items: stretch
+            }
+
+            .tabs {
+                overflow-x: auto
+            }
+
+            .tab {
+                padding: 9px 10px;
+                white-space: nowrap
+            }
+
+            .filters {
+                width: 100%
+            }
+
+            .search {
+                flex: 1;
+                min-width: 0
+            }
+
+            .search input {
+                width: 100%
+            }
+
+            .filters select {
+                flex: 1;
+                min-width: 0
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr
+            }
+
+            .project-desc {
+                min-height: 0
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr
+            }
+
+            .field.full {
+                grid-column: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand"><span class="brand-mark">B</span> BusinessFlow</div>
+            <div class="nav-label">WORKSPACE</div>
+            <a class="nav-link" href="index.html"><span class="nav-icon">▦</span> Dashboard</a>
+            <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span> Customers</a>
+            <a class="nav-link active" href="projects.html"><span class="nav-icon">◈</span> Projects</a>
+            <a class="nav-link" href="invoices.html"><span class="nav-icon">▤</span> Invoices</a>
+            <a class="nav-link" href="index.html"><span class="nav-icon">▥</span> Reports</a>
+            <div class="nav-label">PREFERENCES</div>
+
+            <a class="nav-link" href="settings.html"><span class="nav-icon">⚙</span> Settings</a>
+
+            <div class="sidebar-bottom">
+                <div class="help-card"><strong>Need a hand?</strong>
+                    <p>Explore your workspace and keep your projects moving forward.</p><button
+                        onclick="showToast('Help center coming soon!')">Visit help center ↗</button>
+                </div><a class="nav-link" href="index.html"><span class="nav-icon">↪</span> Back to dashboard</a>
+            </div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <div class="breadcrumb">Workspace / <strong>Projects</strong></div>
+                    <div class="heading-row"><button class="mobile-menu" onclick="toggleMenu()"
+                            aria-label="Open menu">☰</button>
+                        <h1>Projects</h1>
+                    </div>
+                    <p class="subtitle">Plan, track, and deliver great work with your team.</p>
+                </div>
+                <div class="top-actions"><button class="icon-button" onclick="showToast('You are all caught up!')"
+                        aria-label="Notifications">♧</button>
+                    <div class="avatar">JD</div><button class="primary" onclick="openModal()">＋ New project</button>
+                </div>
+            </header>
+
+            <section class="stats">
+                <div class="stat">
+                    <div class="stat-top">Total projects <span class="stat-icon purple">◈</span></div>
+                    <div class="stat-value" id="totalProjects">6</div>
+                    <div class="stat-foot"><span class="positive">+2</span> compared with last month</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-top">In progress <span class="stat-icon mint">↗</span></div>
+                    <div class="stat-value" id="inProgress">3</div>
+                    <div class="stat-foot">Projects currently underway</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-top">Completed <span class="stat-icon peach">✓</span></div>
+                    <div class="stat-value" id="completedProjects">2</div>
+                    <div class="stat-foot">Successfully delivered projects</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-top">Awaiting review <span class="stat-icon rose">◷</span></div>
+                    <div class="stat-value" id="reviewProjects">1</div>
+                    <div class="stat-foot">Projects needing your attention</div>
+                </div>
+            </section>
+
+            <section class="toolbar">
+                <div class="tabs">
+                    <button class="tab active" data-filter="all" onclick="setFilter('all',this)">All projects <span
+                            id="allCount">6</span></button>
+                    <button class="tab" data-filter="progress" onclick="setFilter('progress',this)">In progress</button>
+                    <button class="tab" data-filter="review" onclick="setFilter('review',this)">In review</button>
+                    <button class="tab" data-filter="complete" onclick="setFilter('complete',this)">Completed</button>
+                </div>
+                <div class="filters">
+                    <div class="search"><span>⌕</span><input id="searchInput" type="search"
+                            placeholder="Search projects..." oninput="renderProjects()"></div>
+                    <select id="sortSelect" onchange="renderProjects()" aria-label="Sort projects">
+                        <option value="recent">Recently updated</option>
+                        <option value="name">Project name</option>
+                        <option value="progress">Progress</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="project-grid" id="projectGrid" aria-live="polite"></section>
+        </main>
+    </div>
+
+    <div class="overlay" id="projectModal" onclick="if(event.target===this)closeModal()">
+        <form class="modal" id="projectForm" onsubmit="addProject(event)">
+            <div class="modal-head">
+                <h2>Create a new project</h2><button type="button" class="close" onclick="closeModal()"
+                    aria-label="Close">×</button>
+            </div>
+            <div class="form-grid">
+                <div class="field full"><label for="projectName">Project name *</label><input id="projectName" required
+                        maxlength="70" placeholder="e.g. Website redesign"></div>
+                <div class="field full"><label for="projectDescription">Description</label><textarea
+                        id="projectDescription" maxlength="180" placeholder="What is this project about?"></textarea>
+                </div>
+                <div class="field"><label for="projectStatus">Status</label><select id="projectStatus">
+                        <option value="progress">In progress</option>
+                        <option value="review">In review</option>
+                        <option value="planned">Planned</option>
+                        <option value="complete">Completed</option>
+                    </select></div>
+                <div class="field"><label for="projectDue">Due date</label><input id="projectDue" type="date"></div>
+                <div class="field"><label for="projectClient">Client / team</label><input id="projectClient"
+                        placeholder="e.g. Acme Studio"></div>
+                <div class="field"><label for="projectProgress">Progress (%)</label><input id="projectProgress"
+                        type="number" min="0" max="100" value="0"></div>
+            </div>
+            <div class="modal-actions"><button type="button" class="secondary"
+                    onclick="closeModal()">Cancel</button><button class="primary" type="submit">Create project</button>
+            </div>
+        </form>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+        const projects = [
+            { id: 1, name: "Website Redesign", desc: "Refresh the company website with a modern, accessible design.", status: "progress", progress: 72, due: "2026-10-24", client: "Acme Studio", symbol: "✦", color: "symbol-blue", team: ["JD", "AM", "KL"], updated: 6 },
+            { id: 2, name: "Mobile App Development", desc: "Build a seamless mobile experience for customers on the go.", status: "progress", progress: 48, due: "2026-11-05", client: "Product Team", symbol: "▣", color: "symbol-green", team: ["JD", "SK", "TM"], updated: 5 },
+            { id: 3, name: "Brand Identity", desc: "Create a consistent visual identity across all brand touchpoints.", status: "review", progress: 90, due: "2026-10-18", client: "Marketing", symbol: "✳", color: "symbol-orange", team: ["AM", "KL"], updated: 4 },
+            { id: 4, name: "Customer Portal", desc: "A self-service portal that makes account management easier.", status: "progress", progress: 35, due: "2026-11-18", client: "Customer Success", symbol: "◎", color: "symbol-violet", team: ["JD", "TM", "SK"], updated: 3 },
+            { id: 5, name: "Q3 Marketing Campaign", desc: "Campaign assets and launch materials for the quarterly promotion.", status: "complete", progress: 100, due: "2026-09-30", client: "Growth Team", symbol: "↗", color: "symbol-pink", team: ["AM", "TM"], updated: 2 },
+            { id: 6, name: "Analytics Dashboard", desc: "Bring key business metrics together in one clear reporting view.", status: "complete", progress: 100, due: "2026-09-22", client: "Operations", symbol: "▥", color: "symbol-cyan", team: ["JD", "KL"], updated: 1 }
+        ];
+        let currentFilter = "all";
+        const statusLabels = { progress: "In progress", review: "In review", complete: "Completed", planned: "Planned" };
+        function safe(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])) }
+        function formatDate(value) { if (!value) return "Not set"; const d = new Date(value + "T12:00:00"); return d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) }
+        function renderProjects() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const sort = document.getElementById("sortSelect").value;
+            let list = projects.filter(p => (currentFilter === "all" || p.status === currentFilter) && [p.name, p.desc, p.client].some(v => v.toLowerCase().includes(query)));
+            if (sort === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+            else if (sort === "progress") list.sort((a, b) => b.progress - a.progress);
+            else list.sort((a, b) => b.updated - a.updated);
+            const grid = document.getElementById("projectGrid");
+            if (!list.length) { grid.innerHTML = '<div class="empty"><strong>No projects found</strong>Try a different search or create a new project.</div>'; return }
+            grid.innerHTML = list.map(p => `<article class="project-card">
+ <div class="card-head"><div class="project-symbol ${p.color}">${safe(p.symbol)}</div><button class="more" title="Project options" aria-label="Project options" onclick="projectOptions(${p.id})">···</button></div>
+ <h2 class="project-title">${safe(p.name)}</h2><p class="project-desc">${safe(p.desc || "No description provided.")}</p>
+ <span class="status status-${p.status}">${statusLabels[p.status]}</span>
+ <div class="card-divider"></div>
+ <div class="project-meta"><span>Progress</span><strong>${p.progress}%</strong></div>
+ <div class="progress-track"><div class="progress-fill" style="width:${p.progress}%"></div></div>
+ <div class="card-footer"><div class="avatars" aria-label="Team members">${p.team.map((person, i) => `<span class="mini-avatar" title="Team member ${safe(person)}" style="z-index:${10 - i}">${safe(person)}</span>`).join("")}</div><div class="due-date">Due <strong>${formatDate(p.due)}</strong></div></div>
+ </article>`).join("");
+        }
+        function updateStats() {
+            document.getElementById("totalProjects").textContent = projects.length;
+            document.getElementById("inProgress").textContent = projects.filter(p => p.status === "progress").length;
+            document.getElementById("completedProjects").textContent = projects.filter(p => p.status === "complete").length;
+            document.getElementById("reviewProjects").textContent = projects.filter(p => p.status === "review").length;
+            document.getElementById("allCount").textContent = projects.length;
+            document.querySelectorAll(".tab").forEach(btn => { const key = btn.dataset.filter; if (key !== "all") { const count = projects.filter(p => p.status === key).length; btn.textContent = ({ progress: "In progress", review: "In review", complete: "Completed" })[key] + " " + count } });
+        }
+        function setFilter(filter, button) { currentFilter = filter; document.querySelectorAll(".tab").forEach(b => b.classList.remove("active")); button.classList.add("active"); renderProjects() }
+        function openModal() { document.getElementById("projectModal").classList.add("open"); document.getElementById("projectName").focus() }
+        function closeModal() { document.getElementById("projectModal").classList.remove("open") }
+        function addProject(event) {
+            event.preventDefault();
+            const name = document.getElementById("projectName").value.trim();
+            if (!name) return;
+            const status = document.getElementById("projectStatus").value;
+            projects.unshift({ id: Date.now(), name, desc: document.getElementById("projectDescription").value.trim(), status, progress: status === "complete" ? 100 : Number(document.getElementById("projectProgress").value) || 0, due: document.getElementById("projectDue").value, client: document.getElementById("projectClient").value.trim() || "Internal team", symbol: "✦", color: ["symbol-blue", "symbol-green", "symbol-orange", "symbol-violet"][projects.length % 4], team: ["JD"], updated: Date.now() });
+            updateStats(); currentFilter = "all"; document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.filter === "all")); renderProjects(); closeModal(); document.getElementById("projectForm").reset(); showToast("Project created successfully!");
+        }
+        function projectOptions(id) {
+            const p = projects.find(x => x.id === id); if (!p) return;
+            const next = prompt("Project: " + p.name + "\nType a new status: progress, review, planned, or complete", p.status);
+            if (next === null) return;
+            if (!Object.prototype.hasOwnProperty.call(statusLabels, next.trim().toLowerCase())) { showToast("Please enter progress, review, planned, or complete."); return }
+            p.status = next.trim().toLowerCase(); if (p.status === "complete") p.progress = 100;
+            p.updated = Date.now(); updateStats(); renderProjects(); showToast("Project status updated.");
+        }
+        function showToast(message) { const el = document.getElementById("toast"); el.textContent = message; el.classList.add("show"); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => el.classList.remove("show"), 2800) }
+        function toggleMenu() { document.getElementById("sidebar").classList.toggle("open") }
+        document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal() });
+        updateStats(); renderProjects();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | BusinessFlow</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: #111c35;
+            color: #fff;
+            padding: 28px 18px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 700;
+            margin: 0 10px 35px;
+        }
+
+        .logo span {
+            color: #7c9cff;
+        }
+
+        .nav-label {
+            color: #94a3b8;
+            font-size: 11px;
+            margin: 25px 10px 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #263657;
+            color: #fff;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            background: #fff;
+            padding: 22px 30px;
+            border-bottom: 1px solid #e7eaf0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            color: #3949ab;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+        }
+
+        .profile small {
+            display: block;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .content {
+            max-width: 1100px;
+            padding: 32px;
+            margin: auto;
+        }
+
+        .heading {
+            margin-bottom: 28px;
+        }
+
+        .heading h1 {
+            font-size: 29px;
+            margin-bottom: 9px;
+        }
+
+        .heading p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e7eaf0;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .settings-nav button {
+            width: 100%;
+            text-align: left;
+            padding: 12px;
+            border: 0;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #475569;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .settings-nav button.active,
+        .settings-nav button:hover {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dbe1ea;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fff;
+            color: #172033;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: 2px solid #c7d2fe;
+            border-color: #6366f1;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn {
+            border: 0;
+            background: #4f46e5;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+        }
+
+        .secondary {
+            background: #fff;
+            color: #334155;
+            border: 1px solid #dbe1ea;
+        }
+
+        .secondary:hover {
+            background: #f8fafc;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 17px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .toggle-row:last-child {
+            border-bottom: 0;
+        }
+
+        .toggle-row p {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+
+        .toggle-row input {
+            width: 19px;
+            height: 19px;
+            accent-color: #4f46e5;
+            flex-shrink: 0;
+        }
+
+        .notice {
+            display: none;
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 14px;
+        }
+
+        .footer {
+            color: #64748b;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                padding: 22px 16px;
+            }
+
+            .topbar {
+                padding: 18px 16px;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .two-columns {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">Business<span>Flow</span></div>
+            <div class="nav-label">Workspace</div>
+            <nav class="nav">
+                <a href="index.html">▦ Dashboard</a>
+                <a href="customers.html">♙ Customers</a>
+                <a href="projects.html">▤ Projects</a>
+                <a href="invoices.html">▧ Invoices</a>
+                <a href="reports.html">▥ Reports</a>
+                <a href="settings.html"><span class="nav-icon">⚙</span>Settings</a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div class="breadcrumb">BusinessFlow / <strong>Settings</strong></div>
+                <div class="profile">
+                    <div class="avatar">JC</div>
+                    <div>
+                        <strong>John Carter</strong>
+                        <small>Business Owner</small>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <section class="heading">
+                    <h1>Settings</h1>
+                    <p>Manage your business profile, preferences, and notifications.</p>
+                </section>
+
+                <div class="settings-grid">
+                    <aside class="card settings-nav">
+                        <button type="button" class="active" data-section="profile">Business Profile</button>
+                        <button type="button" data-section="preferences">Preferences</button>
+                        <button type="button" data-section="notifications">Notifications</button>
+                    </aside>
+
+                    <div>
+                        <section class="card settings-section" id="profile">
+                            <h2>Business Profile</h2>
+                            <p class="description">Update your business information and contact details.</p>
+
+                            <form id="profileForm">
+                                <div class="field">
+                                    <label for="businessName">Business name</label>
+                                    <input id="businessName" name="businessName" value="BusinessFlow Demo" required>
+                                </div>
+
+                                <div class="two-columns">
+                                    <div class="field">
+                                        <label for="ownerName">Owner name</label>
+                                        <input id="ownerName" name="ownerName" value="John Carter" required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="businessEmail">Business email</label>
+                                        <input id="businessEmail" name="businessEmail" type="email"
+                                            value="john@example.com" required>
+                                    </div>
+                                </div>
+
+                                <div class="two-columns">
+                                    <div class="field">
+                                        <label for="businessPhone">Phone number</label>
+                                        <input id="businessPhone" name="businessPhone" type="tel" placeholder="+234...">
+                                    </div>
+                                    <div class="field">
+                                        <label for="businessIndustry">Industry</label>
+                                        <select id="businessIndustry" name="businessIndustry">
+                                            <option>Technology</option>
+                                            <option>Retail</option>
+                                            <option>Consulting</option>
+                                            <option>Marketing</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button class="btn" type="submit">Save Changes</button>
+                                <div class="notice" id="profileNotice" role="status"></div>
+                            </form>
+                        </section>
+
+                        <section class="card settings-section" id="preferences" hidden>
+                            <h2>Preferences</h2>
+                            <p class="description">Choose how BusinessFlow should display information.</p>
+
+                            <form id="preferencesForm">
+                                <div class="field">
+                                    <label for="language">Language</label>
+                                    <select id="language" name="language">
+                                        <option>English</option>
+                                        <option>French</option>
+                                        <option>Spanish</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <label for="timezone">Time zone</label>
+                                    <select id="timezone" name="timezone">
+                                        <option value="Africa/Lagos">Africa/Lagos (WAT)</option>
+                                        <option value="Europe/London">Europe/London</option>
+                                        <option value="America/New_York">America/New York</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <label for="currency">Display currency</label>
+                                    <select id="currency" name="currency">
+                                        <option value="USD">US Dollar ($)</option>
+                                        <option value="NGN">Nigerian Naira (₦)</option>
+                                        <option value="GBP">British Pound (£)</option>
+                                        <option value="EUR">Euro (€)</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn" type="submit">Save Preferences</button>
+                                <div class="notice" id="preferencesNotice" role="status"></div>
+                            </form>
+                        </section>
+
+                        <section class="card settings-section" id="notifications" hidden>
+                            <h2>Notifications</h2>
+                            <p class="description">Choose which updates you want to receive in this demo.</p>
+
+                            <form id="notificationsForm">
+                                <div class="toggle-row">
+                                    <div>
+                                        <strong>Invoice updates</strong>
+                                        <p>Get notified when invoice statuses change.</p>
+                                    </div>
+                                    <input type="checkbox" name="invoiceUpdates" checked>
+                                </div>
+                                <div class="toggle-row">
+                                    <div>
+                                        <strong>New customers</strong>
+                                        <p>Get notified when a customer is added.</p>
+                                    </div>
+                                    <input type="checkbox" name="newCustomers" checked>
+                                </div>
+                                <div class="toggle-row">
+                                    <div>
+                                        <strong>Project updates</strong>
+                                        <p>Get notified about project activity.</p>
+                                    </div>
+                                    <input type="checkbox" name="projectUpdates">
+                                </div>
+
+                                <button class="btn" type="submit">Save Notifications</button>
+                                <div class="notice" id="notificationsNotice" role="status"></div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <span><strong>BusinessFlow</strong> · Business Management SaaS</span>
+                    <span>Build · Manage · Grow</span>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const settingsSections = [...document.querySelectorAll(".settings-section")];
+        const settingsButtons = [...document.querySelectorAll("[data-section]")];
+
+        settingsButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                settingsButtons.forEach(item => item.classList.remove("active"));
+                button.classList.add("active");
+
+                settingsSections.forEach(section => {
+                    section.hidden = section.id !== button.dataset.section;
+                });
+            });
+        });
+
+        function saveSettingsForm(formId, storageKey, noticeId, message) {
+            const form = document.getElementById(formId);
+            const notice = document.getElementById(noticeId);
+
+            form.addEventListener("submit", event => {
+                event.preventDefault();
+
+                const data = Object.fromEntries(new FormData(form).entries());
+
+                if (formId === "notificationsForm") {
+                    data.invoiceUpdates = form.elements.invoiceUpdates.checked;
+                    data.newCustomers = form.elements.newCustomers.checked;
+                    data.projectUpdates = form.elements.projectUpdates.checked;
+                }
+
+                localStorage.setItem(storageKey, JSON.stringify(data));
+                notice.textContent = message;
+                notice.style.display = "block";
+            });
+
+            const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+            if (saved) {
+                Object.entries(saved).forEach(([key, value]) => {
+                    const field = form.elements.namedItem(key);
+                    if (!field) return;
+                    if (field.type === "checkbox") {
+                        field.checked = value;
+                    } else {
+                        field.value = value;
+                    }
+                });
+            }
+        }
+
+        saveSettingsForm("profileForm", "businessflow-profile", "profileNotice", "Business profile saved successfully.");
+        saveSettingsForm("preferencesForm", "businessflow-preferences", "preferencesNotice", "Preferences saved successfully.");
+        saveSettingsForm("notificationsForm", "businessflow-notifications", "notificationsNotice", "Notification settings saved successfully.");
+    </script>
+</body>
+
+</html>

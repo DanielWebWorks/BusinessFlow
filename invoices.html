@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoices | BusinessFlow</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --white: #fff;
+            --text: #242527;
+            --muted: #788399;
+            --line: #e8ecf3;
+            --blue: #5b5ce2;
+            --green: #169b72;
+            --orange: #d98b2c;
+            --red: #d94f61;
+            --nav: #171a2b
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex
+        }
+
+        .sidebar {
+            width: 245px;
+            background: var(--nav);
+            color: #aab0c4;
+            padding: 27px 17px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 0 10px 34px;
+            color: white;
+            font-size: 21px;
+            font-weight: 800;
+            text-decoration: none
+        }
+
+        .brand-mark {
+            width: 35px;
+            height: 35px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #8d8aff, #5555dc);
+            display: grid;
+            place-items: center;
+            color: white
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            color: #747d98;
+            padding: 0 12px;
+            margin: 17px 0 10px
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: #aab0c4;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 3px 0
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #292c43;
+            color: white
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 17px
+        }
+
+        .sidebar-bottom {
+            margin-top: auto
+        }
+
+        .help-card {
+            padding: 16px;
+            background: #23263c;
+            border-radius: 12px;
+            margin: 20px 2px 10px
+        }
+
+        .help-card strong {
+            color: white;
+            font-size: 13px
+        }
+
+        .help-card p {
+            font-size: 11px;
+            line-height: 1.6;
+            color: #aab0c4
+        }
+
+        .help-card button {
+            background: #4546c4;
+            border: 0;
+            color: white;
+            padding: 9px 12px;
+            border-radius: 7px;
+            font-size: 11px
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 28px 34px 40px
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 28px
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 8px
+        }
+
+        h1 {
+            font-size: 27px;
+            letter-spacing: -.7px;
+            margin: 0;
+            font-weight: 800
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 8px 0 0
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .icon-button {
+            height: 40px;
+            width: 40px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: #59657a
+        }
+
+        .avatar {
+            width: 39px;
+            height: 39px;
+            border-radius: 50%;
+            background: #e7e6ff;
+            color: #5654ce;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .primary {
+            border: 0;
+            border-radius: 9px;
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 5px 12px #5b5ce226
+        }
+
+        .primary:hover {
+            background: #4849ca
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 24px
+        }
+
+        .stat,
+        .panel {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 14px
+        }
+
+        .stat {
+            padding: 20px
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .stat-icon {
+            height: 35px;
+            width: 35px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-size: 17px
+        }
+
+        .purple {
+            background: #efedff;
+            color: #6260dc
+        }
+
+        .mint {
+            background: #e2f8ef;
+            color: #15986f
+        }
+
+        .peach {
+            background: #fff0e2;
+            color: #dc8b30
+        }
+
+        .rose {
+            background: #ffe9ed;
+            color: #d95469
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 800;
+            margin: 15px 0 7px;
+            letter-spacing: -.6px
+        }
+
+        .stat-foot {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .positive {
+            color: var(--green);
+            font-weight: 700
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            background: #eceff5;
+            padding: 4px;
+            border-radius: 10px
+        }
+
+        .tab {
+            border: 0;
+            background: transparent;
+            padding: 9px 13px;
+            border-radius: 7px;
+            color: #788399;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 2px 5px #1720330a
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .search {
+            position: relative
+        }
+
+        .search input {
+            width: 220px;
+            padding: 11px 12px 11px 35px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: white;
+            outline: none;
+            font-size: 12px
+        }
+
+        .search input:focus,
+        select:focus {
+            border-color: #9998f3
+        }
+
+        .search span {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            color: #8993a7
+        }
+
+        select {
+            padding: 11px 12px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: white;
+            color: #68748a;
+            font-size: 12px;
+            outline: none
+        }
+
+        .panel {
+            padding: 20px;
+            min-width: 0
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px
+        }
+
+        .panel-heading h2 {
+            font-size: 15px;
+            margin: 0
+        }
+
+        .table-wrap {
+            overflow-x: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap
+        }
+
+        th {
+            text-align: left;
+            padding: 13px 12px;
+            font-size: 10px;
+            letter-spacing: .6px;
+            color: #8993a7;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--line)
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #eef0f5;
+            font-size: 12px
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 0
+        }
+
+        tbody tr:hover {
+            background: #fafbfe
+        }
+
+        .invoice-id {
+            font-weight: 800;
+            color: #4f52ce
+        }
+
+        .customer {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .customer-avatar {
+            width: 33px;
+            height: 33px;
+            border-radius: 10px;
+            background: #e9edff;
+            color: #565bd1;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 10px;
+            flex-shrink: 0
+        }
+
+        .customer-name {
+            font-weight: 700;
+            font-size: 12px
+        }
+
+        .customer-email {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        .amount {
+            font-weight: 800
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800
+        }
+
+        .status:before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor
+        }
+
+        .paid {
+            background: #e1f7ec;
+            color: #138c66
+        }
+
+        .pending {
+            background: #fff2df;
+            color: #c58525
+        }
+
+        .overdue {
+            background: #ffe8ec;
+            color: #d94f61
+        }
+
+        .draft {
+            background: #eef0f5;
+            color: #778196
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 6px
+        }
+
+        .small-btn {
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 7px;
+            padding: 7px 9px;
+            color: #667188;
+            font-size: 11px
+        }
+
+        .small-btn:hover {
+            border-color: #a5a5ef;
+            color: var(--blue)
+        }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 11px;
+            flex-wrap: wrap
+        }
+
+        .pagination {
+            display: flex;
+            gap: 5px
+        }
+
+        .page-btn {
+            width: 31px;
+            height: 31px;
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 7px;
+            font-size: 11px;
+            color: #647087
+        }
+
+        .page-btn.active {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue)
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px 20px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #11162980;
+            z-index: 5;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .overlay.open {
+            display: flex
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow: auto;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 20px 60px #0002
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px
+        }
+
+        .modal-head h2 {
+            font-size: 20px;
+            margin: 0
+        }
+
+        .close {
+            border: 0;
+            background: #f0f2f7;
+            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            font-size: 18px
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .field.full {
+            grid-column: 1/-1
+        }
+
+        .field label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #5d687d
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            outline: none;
+            font-size: 12px;
+            background: white
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 65px
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px
+        }
+
+        .secondary {
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: 9px;
+            padding: 11px 15px;
+            font-size: 12px;
+            color: #59657a
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: #20243a;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            box-shadow: 0 8px 25px #0002;
+            display: none;
+            z-index: 10
+        }
+
+        .toast.show {
+            display: block
+        }
+
+        .mobile-menu {
+            display: none
+        }
+
+        @media(max-width:1150px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .main {
+                padding: 25px
+            }
+        }
+
+        @media(max-width:800px) {
+            .sidebar {
+                width: 205px
+            }
+
+            .main {
+                padding: 22px 18px
+            }
+        }
+
+        @media(max-width:650px) {
+            .app {
+                display: block
+            }
+
+            .sidebar {
+                display: none;
+                position: fixed;
+                z-index: 4;
+                inset: 0 auto 0 0;
+                width: 250px;
+                overflow-y: auto
+            }
+
+            .sidebar.open {
+                display: flex
+            }
+
+            .main {
+                padding: 18px 14px
+            }
+
+            .topbar {
+                align-items: flex-start
+            }
+
+            .top-actions {
+                gap: 7px
+            }
+
+            .top-actions .icon-button {
+                display: none
+            }
+
+            h1 {
+                font-size: 23px
+            }
+
+            .mobile-menu {
+                display: inline-grid;
+                place-items: center;
+                width: 38px;
+                height: 38px;
+                border: 1px solid var(--line);
+                border-radius: 9px;
+                background: white;
+                margin-right: 9px
+            }
+
+            .heading-row {
+                display: flex;
+                align-items: center
+            }
+
+            .topbar {
+                gap: 10px
+            }
+
+            .top-actions .primary {
+                padding: 11px 12px
+            }
+
+            .stats {
+                gap: 10px
+            }
+
+            .stat {
+                padding: 14px
+            }
+
+            .stat-value {
+                font-size: 23px
+            }
+
+            .stat-top {
+                font-size: 11px
+            }
+
+            .stat-icon {
+                width: 30px;
+                height: 30px
+            }
+
+            .toolbar {
+                align-items: stretch
+            }
+
+            .tabs {
+                overflow-x: auto
+            }
+
+            .tab {
+                padding: 9px 10px;
+                white-space: nowrap
+            }
+
+            .filters {
+                width: 100%
+            }
+
+            .search {
+                flex: 1;
+                min-width: 0
+            }
+
+            .search input {
+                width: 100%
+            }
+
+            .filters select {
+                flex: 1;
+                min-width: 0
+            }
+
+            .panel {
+                padding: 13px
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr
+            }
+
+            .field.full {
+                grid-column: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <a class="brand" href="index.html"><span class="brand-mark">B</span> BusinessFlow</a>
+            <div class="nav-label">WORKSPACE</div>
+            <a class="nav-link" href="index.html"><span class="nav-icon">▦</span> Dashboard</a>
+            <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span> Customers</a>
+            <a class="nav-link" href="projects.html"><span class="nav-icon">◈</span> Projects</a>
+            <a class="nav-link active" href="invoices.html"><span class="nav-icon">▤</span> Invoices</a>
+            <a class="nav-link" href="reports.html"><span class="nav-icon">▥</span> Reports</a>
+            <div class="nav-label">PREFERENCES</div>
+
+            <a class="nav-link" href="settings.html"><span class="nav-icon">⚙</span> Settings</a>
+
+            <div class="sidebar-bottom">
+                <div class="help-card"><strong>Need a hand?</strong>
+                    <p>Keep track of payments and stay on top of your business finances.</p><button
+                        onclick="showToast('Help center coming soon!')">Visit help center ↗</button>
+                </div><a class="nav-link" href="index.html">↪ Back to dashboard</a>
+            </div>
+        </aside>
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <div class="breadcrumb">Workspace / <strong>Invoices</strong></div>
+                    <div class="heading-row"><button class="mobile-menu" onclick="toggleMenu()"
+                            aria-label="Open menu">☰</button>
+                        <h1>Invoices</h1>
+                    </div>
+                    <p class="subtitle">Create invoices, track payments, and manage your billing.</p>
+                </div>
+                <div class="top-actions"><button class="icon-button" onclick="showToast('You are all caught up!')"
+                        aria-label="Notifications">♧</button>
+                    <div class="avatar">JD</div><button class="primary" onclick="openModal()">＋ New invoice</button>
+                </div>
+            </header>
+            <section class="stats">
+                <div class="stat">
+                    <div class="stat-top">Total invoiced <span class="stat-icon purple">＄</span></div>
+                    <div class="stat-value" id="totalInvoiced">$12,840</div>
+                    <div class="stat-foot"><span class="positive">↑ 12.5%</span> this month</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-top">Paid <span class="stat-icon mint">✓</span></div>
+                    <div class="stat-value" id="paidTotal">$5,650</div>
+                    <div class="stat-foot">Successfully collected</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-top">Pending <span class="stat-icon peach">◷</span></div>
+                    <div class="stat-value" id="pendingTotal">$2,740</div>
+                    <div class="stat-foot">Awaiting payment</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-top">Overdue <span class="stat-icon rose">!</span></div>
+                    <div class="stat-value" id="overdueTotal">$4,450</div>
+                    <div class="stat-foot">Requires follow-up</div>
+                </div>
+            </section>
+            <section class="toolbar">
+                <div class="tabs">
+                    <button class="tab active" data-filter="all" onclick="setFilter('all',this)">All <span
+                            id="allCount">6</span></button>
+                    <button class="tab" data-filter="paid" onclick="setFilter('paid',this)">Paid</button>
+                    <button class="tab" data-filter="pending" onclick="setFilter('pending',this)">Pending</button>
+                    <button class="tab" data-filter="overdue" onclick="setFilter('overdue',this)">Overdue</button>
+                    <button class="tab" data-filter="draft" onclick="setFilter('draft',this)">Draft</button>
+                </div>
+                <div class="filters">
+                    <div class="search"><span>⌕</span><input id="searchInput" type="search"
+                            placeholder="Search invoices..." oninput="renderInvoices()"></div>
+                    <select id="sortSelect" onchange="renderInvoices()" aria-label="Sort invoices">
+                        <option value="recent">Recently added</option>
+                        <option value="amount">Amount: high to low</option>
+                        <option value="name">Customer name</option>
+                    </select>
+                </div>
+            </section>
+            <section class="panel">
+                <div class="panel-heading">
+                    <h2>All invoices</h2><span class="stat-foot">Billing overview</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Due date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceRows"></tbody>
+                    </table>
+                    <div id="emptyState" class="empty" hidden>No invoices found. Try a different search or create a new
+                        invoice.</div>
+                </div>
+                <div class="table-footer"><span id="resultCount">Showing 6 invoices</span>
+                    <div class="pagination"><button class="page-btn active" type="button">1</button><button
+                            class="page-btn" type="button"
+                            onclick="showToast('All invoices are shown on this demo page.')">→</button></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="overlay" id="invoiceModal" onclick="if(event.target===this)closeModal()">
+        <form class="modal" id="invoiceForm" onsubmit="addInvoice(event)">
+            <div class="modal-head">
+                <h2>Create a new invoice</h2><button type="button" class="close" onclick="closeModal()"
+                    aria-label="Close">×</button>
+            </div>
+            <div class="form-grid">
+                <div class="field full"><label for="customerName">Customer / company *</label><input id="customerName"
+                        required maxlength="80" placeholder="e.g. Acme Corporation"></div>
+                <div class="field"><label for="customerEmail">Customer email</label><input id="customerEmail"
+                        type="email" placeholder="billing@example.com"></div>
+                <div class="field"><label for="invoiceAmount">Amount ($) *</label><input id="invoiceAmount"
+                        type="number" min="0.01" step="0.01" required placeholder="1200.00"></div>
+                <div class="field"><label for="dueDate">Due date *</label><input id="dueDate" type="date" required>
+                </div>
+                <div class="field"><label for="invoiceStatus">Status</label><select id="invoiceStatus">
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="draft">Draft</option>
+                    </select></div>
+                <div class="field full"><label for="invoiceNote">Description / note</label><textarea id="invoiceNote"
+                        maxlength="160" placeholder="What is this invoice for?"></textarea></div>
+            </div>
+            <div class="modal-actions"><button type="button" class="secondary"
+                    onclick="closeModal()">Cancel</button><button type="submit" class="primary">Create invoice</button>
+            </div>
+        </form>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script>
+        const invoices = [
+            { id: "INV-0042", name: "Acme Corp", email: "billing@acme.example", amount: 2500, due: "2026-10-22", status: "paid", note: "Website services", date: 6 },
+            { id: "INV-0041", name: "Global Tech Ltd", email: "accounts@globaltech.example", amount: 1200, due: "2026-10-24", status: "paid", note: "Consulting services", date: 5 },
+            { id: "INV-0040", name: "Bright Solutions", email: "finance@bright.example", amount: 3750, due: "2026-10-15", status: "pending", note: "Project milestone", date: 4 },
+            { id: "INV-0039", name: "NextGen Media", email: "payments@nextgen.example", amount: 950, due: "2026-10-27", status: "paid", note: "Design services", date: 3 },
+            { id: "INV-0038", name: "Summit Designs", email: "hello@summit.example", amount: 1800, due: "2026-10-10", status: "overdue", note: "Brand identity project", date: 2 },
+            { id: "INV-0037", name: "Northstar Studio", email: "finance@northstar.example", amount: 2640, due: "2026-10-12", status: "overdue", note: "Creative services", date: 1 }
+        ];
+        let currentFilter = "all";
+        const statusLabels = { paid: "Paid", pending: "Pending", overdue: "Overdue", draft: "Draft" };
+        const money = n => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(".00", "");
+        function safe(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])) }
+        function formatDate(value) { if (!value) return "Not set"; return new Date(value + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) }
+        function renderInvoices() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const sort = document.getElementById("sortSelect").value;
+            let list = invoices.filter(i => (currentFilter === "all" || i.status === currentFilter) && [i.id, i.name, i.email, i.note].some(v => v.toLowerCase().includes(query)));
+            if (sort === "amount") list.sort((a, b) => b.amount - a.amount);
+            else if (sort === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+            else list.sort((a, b) => b.date - a.date);
+            const rows = document.getElementById("invoiceRows");
+            rows.innerHTML = list.map(i => `<tr>
+ <td><span class="invoice-id">${safe(i.id)}</span></td>
+ <td><div class="customer"><div class="customer-avatar">${safe(i.name.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase())}</div><div><div class="customer-name">${safe(i.name)}</div><div class="customer-email">${safe(i.email || "No email provided")}</div></div></div></td>
+ <td class="amount">${money(i.amount)}</td><td>${formatDate(i.due)}</td>
+ <td><span class="status ${i.status}">${statusLabels[i.status]}</span></td>
+ <td><div class="row-actions"><button class="small-btn" onclick="viewInvoice('${safe(i.id)}')">View</button><button class="small-btn" onclick="changeStatus('${safe(i.id)}')">Status</button></div></td>
+ </tr>`).join("");
+            document.getElementById("emptyState").hidden = list.length !== 0;
+            document.getElementById("resultCount").textContent = `Showing ${list.length} of ${invoices.length} invoices`;
+            document.getElementById("allCount").textContent = invoices.length;
+            document.querySelectorAll(".tab").forEach(btn => { const key = btn.dataset.filter; if (key !== "all") btn.textContent = statusLabels[key] + " " + invoices.filter(i => i.status === key).length });
+            updateStats();
+        }
+        function updateStats() {
+            const sum = status => invoices.filter(i => i.status === status).reduce((total, i) => total + i.amount, 0);
+            document.getElementById("totalInvoiced").textContent = money(invoices.reduce((t, i) => t + i.amount, 0));
+            document.getElementById("paidTotal").textContent = money(sum("paid"));
+            document.getElementById("pendingTotal").textContent = money(sum("pending"));
+            document.getElementById("overdueTotal").textContent = money(sum("overdue"));
+        }
+        function setFilter(filter, button) { currentFilter = filter; document.querySelectorAll(".tab").forEach(b => b.classList.remove("active")); button.classList.add("active"); renderInvoices() }
+        function openModal() { document.getElementById("invoiceModal").classList.add("open"); document.getElementById("customerName").focus() }
+        function closeModal() { document.getElementById("invoiceModal").classList.remove("open") }
+        function addInvoice(event) {
+            event.preventDefault();
+            const name = document.getElementById("customerName").value.trim();
+            const email = document.getElementById("customerEmail").value.trim();
+            const amount = Number(document.getElementById("invoiceAmount").value);
+            const due = document.getElementById("dueDate").value;
+            const status = document.getElementById("invoiceStatus").value;
+            if (!name || !Number.isFinite(amount) || amount <= 0 || !due) return;
+            const number = Math.max(42, ...invoices.map(i => Number(i.id.split("-")[1]) || 0)) + 1;
+            invoices.unshift({ id: "INV-" + String(number).padStart(4, "0"), name, email, amount, due, status, note: document.getElementById("invoiceNote").value.trim(), date: Date.now() });
+            currentFilter = "all"; document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.filter === "all"));
+            document.getElementById("searchInput").value = "";
+            document.getElementById("sortSelect").value = "recent";
+            renderInvoices(); closeModal(); document.getElementById("invoiceForm").reset(); showToast("Invoice created successfully!");
+        }
+        function viewInvoice(id) { const i = invoices.find(x => x.id === id); if (i) showToast(`${i.id} · ${i.name} · ${money(i.amount)} · ${statusLabels[i.status]}`) }
+        function changeStatus(id) {
+            const i = invoices.find(x => x.id === id); if (!i) return;
+            const options = ["paid", "pending", "overdue", "draft"];
+            const next = prompt("Update " + i.id + " status. Enter: paid, pending, overdue, or draft", i.status);
+            if (next === null) return;
+            if (!options.includes(next.trim().toLowerCase())) { showToast("Please enter paid, pending, overdue, or draft."); return }
+            i.status = next.trim().toLowerCase(); i.date = Date.now(); renderInvoices(); showToast("Invoice status updated.");
+        }
+        function showToast(message) { const el = document.getElementById("toast"); el.textContent = message; el.classList.add("show"); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => el.classList.remove("show"), 2800) }
+        function toggleMenu() { document.getElementById("sidebar").classList.toggle("open") }
+        document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal() });
+        renderInvoices();
+    </script>
+</body>
+
+</html>

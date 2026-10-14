@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BusinessFlow business management dashboard">
+    <title>BusinessFlow — Business Dashboard</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --navy: #101e35;
+            --text: #17233d;
+            --muted: #718096;
+            --border: #e6ebf3;
+            --bg: #f5f8fd;
+            --white: #fff;
+            --green: #10b981;
+            --red: #ef4444;
+            --radius: 14px;
+            --shadow: 0 3px 12px rgba(28, 48, 85, .035);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .app {
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 248px;
+            padding: 26px 16px 20px;
+            background: linear-gradient(165deg, #142641, #0c1930);
+            color: #d4deef;
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 10px;
+            color: white;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -.8px;
+            white-space: nowrap;
+        }
+
+        .brand-mark {
+            color: #4385ff;
+            font-size: 28px;
+        }
+
+        .brand span:last-child {
+            color: #4385ff;
+        }
+
+        .nav {
+            margin-top: 38px;
+            display: grid;
+            gap: 7px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 9px;
+            color: #c7d2e5;
+            transition: .2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #2869ef;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 19px;
+            width: 23px;
+            text-align: center;
+        }
+
+        .upgrade {
+            margin-top: auto;
+            border: 1px solid #263e65;
+            background: rgba(37, 99, 235, .09);
+            border-radius: 13px;
+            padding: 18px;
+        }
+
+        .upgrade .bolt {
+            color: #5790ff;
+            font-size: 23px;
+        }
+
+        .upgrade h3 {
+            margin: 12px 0 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .upgrade p {
+            color: #b8c7df;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .upgrade .btn {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .main {
+            margin-left: 248px;
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 74px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .search {
+            width: min(410px, 50%);
+            position: relative;
+        }
+
+        .search span {
+            position: absolute;
+            left: 13px;
+            top: 11px;
+            color: #91a0b8;
+            font-size: 17px;
+        }
+
+        .search input {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: #f8faff;
+            border-radius: 8px;
+            padding: 11px 12px 11px 38px;
+            outline: none;
+        }
+
+        .search input:focus {
+            border-color: #8bb3ff;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            position: relative;
+            border: 0;
+            background: transparent;
+            color: #334766;
+            font-size: 21px;
+        }
+
+        .notification-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background: #ef4444;
+            border-radius: 50%;
+            top: 1px;
+            right: 0;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .avatar {
+            display: grid;
+            place-items: center;
+            width: 39px;
+            height: 39px;
+            border-radius: 50%;
+            color: white;
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            font-weight: 700;
+        }
+
+        .profile strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .profile small {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+        }
+
+        .menu-btn {
+            display: none;
+            border: 0;
+            background: transparent;
+            font-size: 24px;
+            color: var(--text);
+        }
+
+        .content {
+            padding: 25px 27px 18px;
+            max-width: 1800px;
+            margin: auto;
+        }
+
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            font-size: 25px;
+            letter-spacing: -.7px;
+        }
+
+        .subtitle {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .date-label {
+            color: #66758d;
+            font-size: 12px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2.2fr) minmax(260px, .95fr);
+            gap: 16px;
+        }
+
+        .left-column,
+        .right-column {
+            min-width: 0;
+            display: grid;
+            align-content: start;
+            gap: 16px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 19px;
+            box-shadow: var(--shadow);
+            min-width: 0;
+        }
+
+        .stat-icon {
+            display: grid;
+            place-items: center;
+            width: 39px;
+            height: 39px;
+            border-radius: 12px;
+            font-size: 19px;
+            margin-bottom: 14px;
+        }
+
+        .blue {
+            color: #2563eb;
+            background: #eaf2ff;
+        }
+
+        .green {
+            color: #059669;
+            background: #e4f8f0;
+        }
+
+        .purple {
+            color: #8b5cf6;
+            background: #f1eaff;
+        }
+
+        .orange {
+            color: #d97706;
+            background: #fff3d8;
+        }
+
+        .stat-label {
+            color: #687991;
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: clamp(19px, 1.65vw, 27px);
+            font-weight: 750;
+            letter-spacing: -.8px;
+            margin: 8px 0;
+            white-space: nowrap;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: var(--green);
+        }
+
+        .stat-change span {
+            color: #8a98ad;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 17px;
+        }
+
+        .panel-heading h2 {
+            font-size: 15px;
+            letter-spacing: -.2px;
+        }
+
+        .panel-heading a,
+        .text-link {
+            color: var(--primary);
+            font-size: 12px;
+        }
+
+        .select {
+            border: 1px solid var(--border);
+            background: white;
+            color: #52647e;
+            padding: 7px 9px;
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        .chart-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, .9fr);
+            gap: 16px;
+        }
+
+        .chart-subtitle {
+            color: #8391a7;
+            font-size: 12px;
+            margin-top: -8px;
+            margin-bottom: 13px;
+        }
+
+        .chart {
+            width: 100%;
+            display: block;
+            overflow: visible;
+        }
+
+        .chart text {
+            fill: #8090a8;
+            font-family: inherit;
+            font-size: 11px;
+        }
+
+        .chart .grid-line {
+            stroke: #edf1f7;
+            stroke-width: 1;
+        }
+
+        .chart .line {
+            fill: none;
+            stroke: #3478f6;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .chart .area {
+            fill: url(#areaFill);
+        }
+
+        .chart .point {
+            fill: white;
+            stroke: #3478f6;
+            stroke-width: 2.5;
+        }
+
+        .expense-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            padding: 10px 0;
+        }
+
+        .donut {
+            width: 138px;
+            height: 138px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: conic-gradient(#3478f6 0 32%, #10b981 32% 56%, #f59e0b 56% 76%, #8b5cf6 76% 88%, #a9b7cd 88% 100%);
+            display: grid;
+            place-items: center;
+            position: relative;
+        }
+
+        .donut::before {
+            content: "";
+            position: absolute;
+            width: 84px;
+            height: 84px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .donut-label {
+            position: relative;
+            text-align: center;
+        }
+
+        .donut-label strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        .donut-label small {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .legend {
+            display: grid;
+            gap: 13px;
+            font-size: 11px;
+            min-width: 100px;
+        }
+
+        .legend-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-row strong {
+            margin-left: auto;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .action {
+            text-align: left;
+            padding: 14px;
+            min-height: 82px;
+            border-radius: 10px;
+            border: 1px solid #dbe8ff;
+            background: #f0f5ff;
+            color: #225ac6;
+            transition: .2s;
+        }
+
+        .action:nth-child(2) {
+            background: #eaf9f3;
+            color: #07845e;
+            border-color: #d5f1e5;
+        }
+
+        .action:nth-child(3) {
+            background: #f3edff;
+            color: #7744d3;
+            border-color: #e9ddff;
+        }
+
+        .action:nth-child(4) {
+            background: #fff0fb;
+            color: #b832a4;
+            border-color: #f9dafa;
+        }
+
+        .action:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .action span {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 11px;
+        }
+
+        .action strong {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .task-list {
+            display: grid;
+        }
+
+        .task {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 13px 0;
+            border-bottom: 1px solid #eef1f6;
+        }
+
+        .task:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .task:first-child {
+            padding-top: 0;
+        }
+
+        .task-check {
+            width: 18px;
+            height: 18px;
+            border: 1.7px solid #b4c3da;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: white;
+            color: white;
+            font-size: 11px;
+        }
+
+        .task.done .task-check {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .task.done .task-name {
+            text-decoration: line-through;
+            color: #93a0b3;
+        }
+
+        .task-body {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .task-name {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .task-time {
+            color: #8a98ad;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .priority {
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .high {
+            background: #ffeded;
+            color: #e34444;
+        }
+
+        .medium {
+            background: #fff4dd;
+            color: #bc7b00;
+        }
+
+        .low {
+            background: #e4f8ef;
+            color: #079568;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #f6f8fc;
+            color: #61718a;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 11px 10px;
+        }
+
+        th:first-child {
+            border-radius: 7px 0 0 7px;
+        }
+
+        th:last-child {
+            border-radius: 0 7px 7px 0;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #edf1f6;
+            font-size: 11px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        tbody tr:hover {
+            background: #fafcff;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+        }
+
+        .paid {
+            color: #07865c;
+            background: #e1f8ee;
+        }
+
+        .pending {
+            color: #a86c00;
+            background: #fff3d8;
+        }
+
+        .overdue {
+            color: #dc3c3c;
+            background: #ffebeb;
+        }
+
+        .calendar-title {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .calendar-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .calendar-controls button {
+            background: none;
+            border: 0;
+            color: #54709a;
+            padding: 4px 8px;
+            font-size: 19px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 4px 0;
+            text-align: center;
+        }
+
+        .calendar-grid span {
+            display: grid;
+            place-items: center;
+            min-height: 31px;
+            font-size: 11px;
+            border-radius: 50%;
+        }
+
+        .calendar-grid .weekday {
+            color: #8795aa;
+            min-height: 24px;
+            font-size: 10px;
+        }
+
+        .calendar-grid .today {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-grid .event {
+            position: relative;
+        }
+
+        .calendar-grid .event::after {
+            content: "";
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 1px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 25px 2px 4px;
+            color: #8b9ab2;
+            font-size: 11px;
+        }
+
+        .footer strong {
+            color: #657894;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: calc(100% - 32px);
+            padding: 14px 18px;
+            background: #142641;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px #14264130;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: .2s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: #0c193080;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 90;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 440px;
+            padding: 24px;
+            box-shadow: 0 20px 60px #0c193040;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 19px;
+        }
+
+        .close-modal {
+            border: 0;
+            background: transparent;
+            font-size: 24px;
+            color: #718096;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 11px;
+            outline: none;
+            background: white;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--primary);
+        }
+
+        .modal .btn {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        @media (min-width: 1600px) {
+            .content {
+                padding: 32px 38px 20px;
+            }
+
+            .card {
+                padding: 23px;
+            }
+        }
+
+        @media (max-width: 1250px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                margin-left: 220px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .right-column {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .right-column .card:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-value {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform .25s;
+                width: 250px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 12px 0 35px #0c193030;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 22px 18px;
+            }
+
+            .chart-layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .expense-center {
+                justify-content: space-evenly;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .topbar {
+                height: 65px;
+                gap: 10px;
+                padding: 0 12px;
+            }
+
+            .search {
+                width: auto;
+                flex: 1;
+            }
+
+            .search input {
+                font-size: 12px;
+            }
+
+            .top-actions {
+                gap: 12px;
+            }
+
+            .profile-info {
+                display: none;
+            }
+
+            .profile-arrow {
+                display: none;
+            }
+
+            .profile .avatar {
+                width: 34px;
+                height: 34px;
+            }
+
+            .content {
+                padding: 20px 12px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .welcome {
+                align-items: flex-start;
+            }
+
+            .date-label {
+                display: none;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stat-value {
+                font-size: 23px;
+            }
+
+            .right-column {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .right-column .card:last-child {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .footer {
+                flex-direction: column;
+            }
+
+            .donut {
+                width: 125px;
+                height: 125px;
+            }
+
+            .donut::before {
+                width: 76px;
+                height: 76px;
+            }
+
+            .legend {
+                gap: 10px;
+            }
+        }
+
+        .welcome {
+            gap: 12px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .stat-label {
+            font-size: 12px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+        }
+
+        .card {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .top-actions {
+            flex-shrink: 0;
+        }
+
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 10px;
+        }
+
+        .profile-trigger:hover {
+            background: #f1f5f9;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .profile-info small {
+            color: #64748b;
+        }
+
+        .profile-arrow {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 180px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+            z-index: 100;
+        }
+
+        .profile-menu a,
+        .profile-menu button {
+            display: block;
+            width: 100%;
+            padding: 11px 12px;
+            border: none;
+            border-radius: 7px;
+            background: transparent;
+            color: #334155;
+            text-decoration: none;
+            text-align: left;
+            font: inherit;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .profile-menu a:hover,
+        .profile-menu button:hover {
+            background: #f1f5f9;
+        }
+
+        .profile-menu[hidden] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <a href="#dashboard" class="brand">
+                <span class="brand-mark">⌁</span>
+                <span>Business<span>Flow</span></span>
+            </a>
+
+            <nav class="nav">
+                <a href="#dashboard" class="active"><span class="nav-icon">⌂</span> Dashboard</a>
+                <a href="#analytics"><span class="nav-icon">▥</span> Analytics</a>
+                <a href="customers.html"><span class="nav-icon">♙</span> Customers</a>
+                <a href="projects.html"><span class="nav-icon">▱</span> Projects</a>
+                <a href="invoices.html"><span class="nav-icon">▤</span> Invoices</a>
+                <a href="invoices.html"><span class="nav-icon">▤</span> Invoices</a>
+                <a href="reports.html"><span class="nav-icon">▥</span> Reports</a>
+                <a href="settings.html"><span class="nav-icon">⚙</span> Settings</a>
+            </nav>
+
+            <div class="upgrade">
+                <div class="bolt">ϟ</div>
+                <h3>Grow Your Business</h3>
+                <p>Better tools. Smarter decisions. One place to manage it all.</p>
+                <button class="btn" data-action="upgrade">Explore Plans</button>
+            </div>
+        </aside>
+
+        <main class="main" id="dashboard">
+            <header class="topbar">
+                <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+                <label class="search">
+                    <span>⌕</span>
+                    <input type="search" id="globalSearch" placeholder="Search anything..."
+                        aria-label="Search dashboard">
+                </label>
+                <div class="top-actions">
+                    <button class="icon-btn" id="notifications" aria-label="Notifications">♧<span
+                            class="notification-dot"></span></button>
+
+                    <div class="profile profile-dropdown">
+                        <button type="button" class="profile-trigger" id="profileTrigger" aria-expanded="false">
+                            <div class="avatar" id="avatar">JC</div>
+                            <div class="profile-info">
+                                <strong id="profileName">John Carter</strong>
+                                <small id="profileRole">Business Owner</small>
+                            </div>
+                            <span class="profile-arrow">▾</span>
+                        </button>
+
+                        <div class="profile-menu" id="profileMenu" hidden>
+                            <a href="settings.html">⚙ Settings</a>
+                            <button type="button" id="logoutBtn">↪ Log Out</button>
+                        </div>
+                    </div>
+
+                </div>
+            </header>
+
+            <div class="content">
+                <section class="welcome">
+                    <div>
+                        <h1>Good morning, <span id="greetingName">John</span>! 👋</h1>
+                        <p class="subtitle">Here's what's happening with your business today.</p>
+                    </div>
+                    <div class="date-label" id="currentDate"></div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <div class="left-column">
+                        <section class="stats" id="analytics">
+                            <article class="card">
+                                <div class="stat-icon blue">＄</div>
+                                <div class="stat-label">Total Revenue</div>
+                                <div class="stat-value">$24,780</div>
+                                <div class="stat-change">↑ 12.5% <span>vs. last month</span></div>
+                            </article>
+                            <article class="card">
+                                <div class="stat-icon green">▤</div>
+                                <div class="stat-label">Total Expenses</div>
+                                <div class="stat-value">$8,420</div>
+                                <div class="stat-change">↓ 6.8% <span>vs. last month</span></div>
+                            </article>
+                            <article class="card">
+                                <div class="stat-icon purple">▥</div>
+                                <div class="stat-label">Net Profit</div>
+                                <div class="stat-value">$16,360</div>
+                                <div class="stat-change">↑ 18.3% <span>vs. last month</span></div>
+                            </article>
+                            <article class="card">
+                                <div class="stat-icon orange">♙</div>
+                                <div class="stat-label">Total Customers</div>
+                                <div class="stat-value" id="customerCount">248</div>
+                                <div class="stat-change">↑ 9.6% <span>vs. last month</span></div>
+                            </article>
+                        </section>
+
+                        <section class="chart-layout">
+                            <article class="card">
+                                <div class="panel-heading">
+                                    <h2>↗ Revenue Overview</h2>
+                                    <select class="select" id="revenuePeriod" aria-label="Revenue period">
+                                        <option value="6">Last 6 Months</option>
+                                        <option value="3">Last 3 Months</option>
+                                        <option value="12">Last 12 Months</option>
+                                    </select>
+                                </div>
+                                <p class="chart-subtitle">Track your business revenue over time</p>
+                                <svg class="chart" id="revenueChart" viewBox="0 0 470 220" role="img"
+                                    aria-label="Revenue line chart">
+                                    <defs>
+                                        <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#3478f6" stop-opacity=".23" />
+                                            <stop offset="100%" stop-color="#3478f6" stop-opacity=".015" />
+                                        </linearGradient>
+                                    </defs>
+                                    <g id="chartDrawing"></g>
+                                </svg>
+                            </article>
+
+                            <article class="card">
+                                <div class="panel-heading">
+                                    <h2>✣ Expense Breakdown</h2>
+                                </div>
+                                <div class="expense-center">
+                                    <div class="donut">
+                                        <div class="donut-label"><strong>$8,420</strong><small>Total Expenses</small>
+                                        </div>
+                                    </div>
+                                    <div class="legend">
+                                        <div class="legend-row"><i class="legend-dot"
+                                                style="background:#3478f6"></i>Marketing <strong>32%</strong></div>
+                                        <div class="legend-row"><i class="legend-dot"
+                                                style="background:#10b981"></i>Operations <strong>24%</strong></div>
+                                        <div class="legend-row"><i class="legend-dot"
+                                                style="background:#f59e0b"></i>Salaries <strong>20%</strong></div>
+                                        <div class="legend-row"><i class="legend-dot"
+                                                style="background:#8b5cf6"></i>Software <strong>12%</strong></div>
+                                        <div class="legend-row"><i class="legend-dot"
+                                                style="background:#a9b7cd"></i>Other <strong>12%</strong></div>
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+
+                        <section class="card" id="invoices">
+                            <div class="panel-heading">
+                                <h2>▤ Recent Invoices</h2>
+                                <a href="#invoices" data-action="all-invoices">View All →</a>
+                            </div>
+                            <div class="table-wrap">
+                                <table id="invoiceTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice #</th>
+                                            <th>Customer</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="invoiceRows">
+                                        <tr>
+                                            <td>INV-0042</td>
+                                            <td>Acme Corp</td>
+                                            <td>$2,500</td>
+                                            <td><span class="status paid">✓ Paid</span></td>
+                                            <td>Oct 12, 2025</td>
+                                        </tr>
+                                        <tr>
+                                            <td>INV-0041</td>
+                                            <td>Global Tech Ltd</td>
+                                            <td>$1,200</td>
+                                            <td><span class="status paid">✓ Paid</span></td>
+                                            <td>Oct 10, 2025</td>
+                                        </tr>
+                                        <tr>
+                                            <td>INV-0040</td>
+                                            <td>Bright Solutions</td>
+                                            <td>$3,750</td>
+                                            <td><span class="status pending">◷ Pending</span></td>
+                                            <td>Oct 8, 2025</td>
+                                        </tr>
+                                        <tr>
+                                            <td>INV-0039</td>
+                                            <td>NextGen Media</td>
+                                            <td>$950</td>
+                                            <td><span class="status paid">✓ Paid</span></td>
+                                            <td>Oct 5, 2025</td>
+                                        </tr>
+                                        <tr>
+                                            <td>INV-0038</td>
+                                            <td>Summit Designs</td>
+                                            <td>$1,800</td>
+                                            <td><span class="status overdue">! Overdue</span></td>
+                                            <td>Oct 2, 2025</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="right-column">
+                        <section class="card">
+                            <div class="panel-heading">
+                                <h2>ϟ Quick Actions</h2>
+                            </div>
+                            <div class="quick-actions">
+                                <button class="action" data-action="invoice"><span>▤</span><strong>New
+                                        Invoice</strong></button>
+                                <button class="action" data-action="customer"><span>♙</span><strong>Add
+                                        Customer</strong></button>
+                                <button class="action" data-action="project"><span>▱</span><strong>Create
+                                        Project</strong></button>
+                                <button class="action" data-action="reports"><span>▥</span><strong>View
+                                        Reports</strong></button>
+                            </div>
+                        </section>
+
+                        <section class="card" id="projects">
+                            <div class="panel-heading">
+                                <h2>☑ Upcoming Tasks</h2>
+                                <a href="#projects" data-action="all-tasks">View All</a>
+                            </div>
+                            <div class="task-list" id="taskList">
+                                <div class="task">
+                                    <button class="task-check" aria-label="Complete task"></button>
+                                    <div class="task-body">
+                                        <div class="task-name">Finalize Q4 proposal</div>
+                                        <div class="task-time">Today · 10:00 AM</div>
+                                    </div>
+                                    <span class="priority high">High</span>
+                                </div>
+                                <div class="task">
+                                    <button class="task-check" aria-label="Complete task"></button>
+                                    <div class="task-body">
+                                        <div class="task-name">Client meeting</div>
+                                        <div class="task-time">Today · 2:00 PM</div>
+                                    </div>
+                                    <span class="priority medium">Medium</span>
+                                </div>
+                                <div class="task">
+                                    <button class="task-check" aria-label="Complete task"></button>
+                                    <div class="task-body">
+                                        <div class="task-name">Update project status</div>
+                                        <div class="task-time">Tomorrow · 10:00 AM</div>
+                                    </div>
+                                    <span class="priority medium">Medium</span>
+                                </div>
+                                <div class="task">
+                                    <button class="task-check" aria-label="Complete task"></button>
+                                    <div class="task-body">
+                                        <div class="task-name">Send invoice #INV-0042</div>
+                                        <div class="task-time">Oct 18 · 9:00 AM</div>
+                                    </div>
+                                    <span class="priority low">Low</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="panel-heading">
+                                <h2>▦ Calendar</h2>
+                                <a href="#calendar" data-action="calendar">View All</a>
+                            </div>
+                            <div class="calendar-controls">
+                                <button id="prevMonth" aria-label="Previous month">‹</button>
+                                <div class="calendar-title" id="calendarTitle"></div>
+                                <button id="nextMonth" aria-label="Next month">›</button>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <span><strong>BusinessFlow</strong> &nbsp;•&nbsp; Business Management SaaS</span>
+                    <span>Build &nbsp;•&nbsp; Manage &nbsp;•&nbsp; Grow</span>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <div class="modal-backdrop" id="modalBackdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-header">
+                <h2 id="modalTitle">Create New Item</h2>
+                <button class="close-modal" id="closeModal" aria-label="Close dialog">×</button>
+            </div>
+            <form id="itemForm">
+                <div id="modalFields"></div>
+                <button type="submit" class="btn">Save Item</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        const $ = (selector, root = document) => root.querySelector(selector);
+        const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+        let toastTimer;
+        function toast(message) {
+            const el = $("#toast");
+            el.textContent = message;
+            el.classList.add("show");
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => el.classList.remove("show"), 2800);
+        }
+
+
+        const profileTrigger = $("#profileTrigger");
+        const profileMenu = $("#profileMenu");
+
+        profileTrigger.addEventListener("click", () => {
+            const isOpen = profileTrigger.getAttribute("aria-expanded") === "true";
+
+            profileTrigger.setAttribute("aria-expanded", String(!isOpen));
+            profileMenu.hidden = isOpen;
+        });
+
+        document.addEventListener("click", event => {
+            if (!event.target.closest(".profile-dropdown")) {
+                profileMenu.hidden = true;
+                profileTrigger.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                profileMenu.hidden = true;
+                profileTrigger.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        const logoutBtn = $("#logoutBtn");
+
+        logoutBtn.addEventListener("click", () => {
+            profileMenu.hidden = true;
+            profileTrigger.setAttribute("aria-expanded", "false");
+            toast("You have been logged out successfully.");
+        });
+
+        // Current date and greeting
+        const now = new Date();
+        $("#currentDate").textContent = now.toLocaleDateString("en-US", {
+            weekday: "short", month: "short", day: "numeric", year: "numeric"
+        });
+
+        const hour = now.getHours();
+        $(".welcome h1").firstChild.textContent =
+            (hour < 12 ? "Good morning, " : hour < 17 ? "Good afternoon, " : "Good evening, ");
+
+        // Revenue chart: drawn with SVG for crisp rendering
+        const chartData = {
+            3: { labels: ["Aug", "Sep", "Oct"], values: [21, 26, 33] },
+            6: { labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct"], values: [12, 13, 14, 22, 27, 34] },
+            12: { labels: ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"], values: [8, 10, 9, 14, 12, 18, 12, 13, 14, 22, 27, 34] }
+        };
+
+        function drawChart(period = 6) {
+            const { labels, values } = chartData[period];
+            const width = 470, height = 220;
+            const left = 43, right = 10, top = 12, bottom = 31;
+            const plotW = width - left - right, plotH = height - top - bottom;
+            const max = 40;
+            const x = i => left + (i / (values.length - 1)) * plotW;
+            const y = value => top + plotH - (value / max) * plotH;
+
+            let markup = "";
+            [0, 10, 20, 30, 40].forEach(value => {
+                const yy = y(value);
+                markup += `<line class="grid-line" x1="${left}" y1="${yy}" x2="${width - right}" y2="${yy}"/>`;
+                markup += `<text x="${left - 8}" y="${yy + 4}" text-anchor="end">${value === 0 ? "$0" : "$" + value + "k"}</text>`;
+            });
+
+            const points = values.map((value, i) => `${x(i)},${y(value)}`).join(" ");
+            const area = `M ${x(0)} ${y(values[0])} ` +
+                values.map((value, i) => `L ${x(i)} ${y(value)}`).join(" ") +
+                ` L ${x(values.length - 1)} ${y(0)} L ${x(0)} ${y(0)} Z`;
+
+            markup += `<path class="area" d="${area}"/>`;
+            markup += `<polyline class="line" points="${points}"/>`;
+
+            values.forEach((value, i) => {
+                markup += `<circle class="point" cx="${x(i)}" cy="${y(value)}" r="3.5"><title>${labels[i]}: $${value},000</title></circle>`;
+                markup += `<text x="${x(i)}" y="${height - 7}" text-anchor="middle">${labels[i]}</text>`;
+            });
+
+            $("#chartDrawing").innerHTML = markup;
+        }
+
+        $("#revenuePeriod").addEventListener("change", event => {
+            drawChart(Number(event.target.value));
+        });
+        drawChart();
+
+        // Working monthly calendar
+        let calendarDate = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        function renderCalendar() {
+            const year = calendarDate.getFullYear();
+            const month = calendarDate.getMonth();
+            $("#calendarTitle").textContent = calendarDate.toLocaleDateString("en-US", {
+                month: "long", year: "numeric"
+            });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const days = new Date(year, month + 1, 0).getDate();
+            const todayIsCurrentMonth = year === now.getFullYear() && month === now.getMonth();
+            let html = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+                .map(day => `<span class="weekday">${day}</span>`).join("");
+
+            for (let i = 0; i < firstDay; i++) html += "<span></span>";
+
+            for (let day = 1; day <= days; day++) {
+                const isToday = todayIsCurrentMonth && day === now.getDate();
+                const hasEvent = [8, 12, 15, 18, 22].includes(day);
+                html += `<span class="${isToday ? "today" : hasEvent ? "event" : ""}" title="${hasEvent ? "Scheduled activity" : ""}">${day}</span>`;
+            }
+
+            $("#calendarGrid").innerHTML = html;
+        }
+
+        $("#prevMonth").addEventListener("click", () => {
+            calendarDate.setMonth(calendarDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        $("#nextMonth").addEventListener("click", () => {
+            calendarDate.setMonth(calendarDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        renderCalendar();
+
+        // Task completion
+        $("#taskList").addEventListener("click", event => {
+            const button = event.target.closest(".task-check");
+            if (!button) return;
+            const task = button.closest(".task");
+            task.classList.toggle("done");
+            button.textContent = task.classList.contains("done") ? "✓" : "";
+            toast(task.classList.contains("done") ? "Task marked as complete." : "Task reopened.");
+        });
+
+        // Search across invoice rows and dashboard tasks
+        $("#globalSearch").addEventListener("input", event => {
+            const query = event.target.value.trim().toLowerCase();
+            let matches = 0;
+
+            $$("#invoiceRows tr").forEach(row => {
+                const match = row.textContent.toLowerCase().includes(query);
+                row.hidden = !match;
+                if (match) matches++;
+            });
+
+            $$("#taskList .task").forEach(task => {
+                const match = task.textContent.toLowerCase().includes(query);
+                task.hidden = !query || match;
+                if (query && match) matches++;
+            });
+
+            if (!query) {
+                $$("#taskList .task").forEach(task => task.hidden = false);
+            } else if (!matches) {
+                toast("No matching invoices or tasks found.");
+            }
+        });
+
+        // Mobile navigation
+        $("#menuBtn").addEventListener("click", () => {
+            $("#sidebar").classList.toggle("open");
+        });
+
+        $$(".nav a").forEach(link => link.addEventListener("click", () => {
+            $$(".nav a").forEach(item => item.classList.remove("active"));
+            link.classList.add("active");
+            $("#sidebar").classList.remove("open");
+        }));
+
+        $("#notifications").addEventListener("click", () => {
+            toast("You're all caught up! No new notifications.");
+        });
+
+        document.addEventListener("click", event => {
+            const sidebar = $("#sidebar");
+            const menuBtn = $("#menuBtn");
+
+            if (
+                window.innerWidth <= 850 &&
+                sidebar.classList.contains("open") &&
+                !sidebar.contains(event.target) &&
+                !menuBtn.contains(event.target)
+            ) {
+                sidebar.classList.remove("open");
+            }
+        });
+
+        // Reusable create-item modal
+        const modalConfigs = {
+            invoice: {
+                title: "Create New Invoice",
+                fields: [
+                    ["customer", "Customer name", "text", "Enter customer or company"],
+                    ["amount", "Invoice amount ($)", "number", "0.00"],
+                    ["due", "Due date", "date", ""]
+                ]
+            },
+            customer: {
+                title: "Add New Customer",
+                fields: [
+                    ["name", "Customer name", "text", "Full name or company"],
+                    ["email", "Email address", "email", "name@company.com"],
+                    ["company", "Company", "text", "Company name"]
+                ]
+            },
+            project: {
+                title: "Create New Project",
+                fields: [
+                    ["name", "Project name", "text", "Enter project name"],
+                    ["client", "Client", "text", "Client or company"],
+                    ["due", "Deadline", "date", ""]
+                ]
+            }
+        };
+
+        let activeModalType = "";
+
+        function openModal(type) {
+            const config = modalConfigs[type];
+            if (!config) return;
+            activeModalType = type;
+            $("#modalTitle").textContent = config.title;
+            $("#modalFields").innerHTML = config.fields.map(([name, label, inputType, placeholder]) => `
+      <div class="field">
+        <label for="field-${name}">${label}</label>
+        <input id="field-${name}" name="${name}" type="${inputType}" placeholder="${placeholder}" ${name === "amount" ? 'min="0" step="0.01"' : ""} required>
+      </div>
+    `).join("");
+            $("#modalBackdrop").classList.add("open");
+            $(`#modalFields input`)?.focus();
+        }
+
+        function closeModal() {
+            $("#modalBackdrop").classList.remove("open");
+            $("#itemForm").reset();
+        }
+
+        $("#closeModal").addEventListener("click", closeModal);
+        $("#modalBackdrop").addEventListener("click", event => {
+            if (event.target === $("#modalBackdrop")) closeModal();
+        });
+
+        $("#itemForm").addEventListener("submit", event => {
+            event.preventDefault();
+            const data = Object.fromEntries(new FormData(event.target).entries());
+
+            if (activeModalType === "invoice") {
+                const id = `INV-${String($("#invoiceRows").rows.length + 37).padStart(4, "0")}`;
+                const date = data.due ? new Date(data.due + "T12:00:00").toLocaleDateString("en-US", {
+                    month: "short", day: "numeric", year: "numeric"
+                }) : "Not set";
+
+                const row = document.createElement("tr");
+                [id, data.customer, "$" + Number(data.amount).toLocaleString("en-US", { minimumFractionDigits: 2 }), "Pending", date]
+                    .forEach((value, index) => {
+                        const cell = document.createElement("td");
+                        if (index === 3) {
+                            const badge = document.createElement("span");
+                            badge.className = "status pending";
+                            badge.textContent = "◷ Pending";
+                            cell.appendChild(badge);
+                        } else {
+                            cell.textContent = value;
+                        }
+                        row.appendChild(cell);
+                    });
+                $("#invoiceRows").prepend(row);
+                toast("Invoice created successfully!");
+            } else if (activeModalType === "customer") {
+                const count = $("#customerCount");
+                count.textContent = Number(count.textContent) + 1;
+                toast(`Customer "${data.name}" added to your demo.`);
+            } else if (activeModalType === "project") {
+                const task = document.createElement("div");
+                task.className = "task";
+                const check = document.createElement("button");
+                check.className = "task-check";
+                check.setAttribute("aria-label", "Complete task");
+                const body = document.createElement("div");
+                body.className = "task-body";
+                const name = document.createElement("div");
+                name.className = "task-name";
+                name.textContent = data.name;
+                const time = document.createElement("div");
+                time.className = "task-time";
+                time.textContent = data.due ? `Deadline: ${data.due}` : `Client: ${data.client}`;
+                body.append(name, time);
+                const badge = document.createElement("span");
+                badge.className = "priority low";
+                badge.textContent = "New";
+                task.append(check, body, badge);
+                $("#taskList").prepend(task);
+                toast("Project added to your demo tasks.");
+            }
+
+            closeModal();
+        });
+
+        // All quick actions
+        document.addEventListener("click", event => {
+            const action = event.target.closest("[data-action]");
+            if (!action) return;
+
+            const type = action.dataset.action;
+
+            if (modalConfigs[type]) {
+                openModal(type);
+                return;
+            }
+
+            const messages = {
+                reports: "Your revenue and expense charts are ready to review.",
+                upgrade: "Plan options would be displayed here in the full product.",
+                "all-invoices": "All demo invoices are shown in the invoice table.",
+                "all-tasks": "Your upcoming tasks are listed in the task panel.",
+                calendar: "Use the arrows to browse months in your calendar."
+            };
+
+            if (messages[type]) toast(messages[type]);
+        });
+
+        // Demo navigation links for sections not yet built
+        $("#sidebar").addEventListener("click", event => {
+            const link = event.target.closest("a");
+            if (!link) return;
+
+            const section = link.getAttribute("href");
+            if (["#customers", "#settings"].includes(section)) {
+                event.preventDefault();
+                toast(section === "#customers"
+                    ? "Use Add Customer to try the customer workflow."
+                    : "Settings page can be added as the next portfolio feature.");
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage customers with BusinessFlow business management software.">
+    <title>Customers — BusinessFlow</title>
+    <style>
+        :root {
+            --blue: #2563eb;
+            --navy: #142641;
+            --bg: #f5f8fd;
+            --text: #17233d;
+            --muted: #77869d;
+            --border: #e5ebf4;
+            --green: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px
+        }
+
+        button,
+        input,
+        select {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .layout {
+            min-height: 100vh
+        }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 245px;
+            background: linear-gradient(165deg, #142641, #0c1930);
+            color: #d4deef;
+            padding: 26px 16px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 800;
+            color: white;
+            padding: 0 10px;
+            letter-spacing: -.8px
+        }
+
+        .brand span {
+            color: #4385ff
+        }
+
+        .nav {
+            display: grid;
+            gap: 7px;
+            margin-top: 38px
+        }
+
+        .nav a {
+            padding: 13px 14px;
+            border-radius: 9px;
+            color: #c7d2e5;
+            display: flex;
+            align-items: center;
+            gap: 13px
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #2869ef;
+            color: white
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            width: 22px;
+            text-align: center
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 16px;
+            border: 1px solid #263e65;
+            border-radius: 12px;
+            background: #1a3150
+        }
+
+        .sidebar-bottom strong {
+            display: block;
+            color: white;
+            margin-bottom: 8px
+        }
+
+        .sidebar-bottom p {
+            font-size: 12px;
+            line-height: 1.7;
+            color: #b8c7df
+        }
+
+        .main {
+            margin-left: 245px
+        }
+
+        .topbar {
+            height: 74px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            gap: 15px
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .breadcrumb strong {
+            color: var(--text)
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            background: #e6edff;
+            color: #2557c7;
+            border-radius: 50%;
+            font-weight: 750
+        }
+
+        .profile strong {
+            display: block;
+            font-size: 13px
+        }
+
+        .profile small {
+            display: block;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        .menu {
+            display: none;
+            background: none;
+            border: 0;
+            font-size: 23px
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: auto;
+            padding: 30px
+        }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 26px
+        }
+
+        h1 {
+            font-size: 27px;
+            letter-spacing: -.7px
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin-top: 7px
+        }
+
+        .btn {
+            background: var(--blue);
+            color: white;
+            border: 0;
+            padding: 12px 17px;
+            border-radius: 8px;
+            font-weight: 650;
+            transition: .2s
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px)
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 20px;
+            box-shadow: 0 3px 12px #1c305508;
+            min-width: 0
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .stat-icon {
+            display: grid;
+            place-items: center;
+            width: 37px;
+            height: 37px;
+            border-radius: 10px;
+            background: #eaf2ff;
+            color: #2563eb;
+            font-size: 19px
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: 750;
+            letter-spacing: -.7px;
+            margin: 15px 0 7px
+        }
+
+        .stat-foot {
+            font-size: 12px;
+            color: var(--green)
+        }
+
+        .stat-foot span {
+            color: var(--muted)
+        }
+
+        .table-card {
+            padding: 0;
+            overflow: hidden
+        }
+
+        .table-heading {
+            padding: 22px 22px 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px
+        }
+
+        h2 {
+            font-size: 16px
+        }
+
+        .table-heading p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px
+        }
+
+        .tools {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .search {
+            width: 245px;
+            position: relative
+        }
+
+        .search span {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            color: #8795aa;
+            font-size: 17px
+        }
+
+        .search input {
+            width: 100%;
+            padding: 11px 12px 11px 36px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none
+        }
+
+        .search input:focus,
+        .field input:focus,
+        .field select:focus {
+            border-color: #82aaff
+        }
+
+        .filter {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            color: #52647e
+        }
+
+        .table-wrap {
+            overflow-x: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap
+        }
+
+        thead {
+            background: #f7f9fc
+        }
+
+        th {
+            padding: 13px 20px;
+            color: #75849b;
+            font-size: 11px;
+            font-weight: 650
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #edf1f6;
+            font-size: 12px
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 0
+        }
+
+        tbody tr:hover {
+            background: #fafcff
+        }
+
+        .customer {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .customer-avatar {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            font-weight: 750;
+            background: #eaf2ff;
+            color: #2563eb
+        }
+
+        .customer-name {
+            font-weight: 650
+        }
+
+        .customer-company {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 650
+        }
+
+        .active-status {
+            color: #07865c;
+            background: #e1f8ee
+        }
+
+        .inactive-status {
+            color: #6b7280;
+            background: #eef1f5
+        }
+
+        .vip-status {
+            color: #9a6700;
+            background: #fff3d8
+        }
+
+        .row-action {
+            border: 0;
+            background: none;
+            color: #6c7d95;
+            font-size: 20px;
+            padding: 3px 8px;
+        }
+
+        .row-action+.customer-action-menu {
+            position: absolute;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+            display: none
+        }
+
+        .table-footer {
+            border-top: 1px solid var(--border);
+            padding: 15px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .pagination {
+            display: flex;
+            gap: 6px
+        }
+
+        .page-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 7px 11px;
+            border-radius: 7px;
+            color: #52647e
+        }
+
+        .page-btn.current {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue)
+        }
+
+        .footer {
+            padding: 24px 2px;
+            color: #8997ad;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #0c193080;
+            z-index: 30;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .overlay.open {
+            display: flex
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 20px 60px #0c193040
+        }
+
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 23px
+        }
+
+        .modal-head h2 {
+            font-size: 20px
+        }
+
+        .close {
+            border: 0;
+            background: none;
+            font-size: 25px;
+            color: var(--muted)
+        }
+
+        .field {
+            margin-bottom: 16px
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 650;
+            margin-bottom: 7px
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            outline: none;
+            background: white
+        }
+
+        .modal .btn {
+            width: 100%;
+            margin-top: 5px
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: #142641;
+            color: white;
+            border-radius: 9px;
+            padding: 14px 18px;
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: .2s;
+            pointer-events: none
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0)
+        }
+
+        @media(max-width:1100px) {
+            .sidebar {
+                width: 210px
+            }
+
+            .main {
+                margin-left: 210px
+            }
+
+            .content {
+                padding: 24px 18px
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .table-heading {
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .tools {
+                width: 100%
+            }
+
+            .search {
+                flex: 1;
+                width: auto
+            }
+        }
+
+        @media(max-width:760px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .25s;
+                width: 245px
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 10px 0 30px #14264130
+            }
+
+            .main {
+                margin-left: 0
+            }
+
+            .menu {
+                display: block
+            }
+
+            .topbar {
+                height: 65px;
+                padding: 0 16px
+            }
+
+            .content {
+                padding: 23px 14px
+            }
+
+            .heading {
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .heading .btn {
+                width: 100%
+            }
+
+            .profile>div:last-child {
+                display: none
+            }
+
+            .table-footer {
+                align-items: flex-start;
+                flex-direction: column
+            }
+        }
+
+        @media(max-width:420px) {
+            .stats {
+                gap: 10px
+            }
+
+            .card {
+                padding: 14px
+            }
+
+            .stat-value {
+                font-size: 23px
+            }
+
+            .tools {
+                flex-wrap: wrap
+            }
+
+            .search {
+                min-width: 100%
+            }
+
+            .filter {
+                flex: 1
+            }
+
+            .footer {
+                flex-direction: column
+            }
+        }
+
+
+        .customer-action-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            min-width: 120px;
+            padding: 6px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .customer-action-menu button {
+            padding: 9px 12px;
+            border: none;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #374151;
+        }
+
+        .customer-action-menu button:hover {
+            background: #f3f4f6;
+        }
+
+        .customer-action-menu button:last-child {
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar" id="sidebar">
+
+            <a href="projects.html"><span class="nav-icon">▱</span>Projects</a>
+            <nav class="nav">
+                <a href="index.html"><span class="nav-icon">⌂</span>Dashboard</a>
+                <a href="index.html#analytics"><span class="nav-icon">▥</span>Analytics</a>
+                <a href="customers.html" class="active"><span class="nav-icon">♙</span>Customers</a>
+                <a href="index.html#projects"><span class="nav-icon">▱</span>Projects</a>
+                <a href="invoices.html"><span class="nav-icon">▤</span>Invoices</a>
+                <a href="reports.html"><span class="nav-icon">▥</span>Reports</a>
+                <a href="#" data-action="settings"><span class="nav-icon">⚙</span>Settings</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <strong>Grow your business</strong>
+                <p>Keep your customer relationships organized and build lasting partnerships.</p>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div style="display:flex;align-items:center;gap:14px">
+                    <button class="menu" id="menuBtn" aria-label="Toggle navigation">☰</button>
+                    <div class="breadcrumb">BusinessFlow / <strong>Customers</strong></div>
+                </div>
+                <div class="profile">
+                    <div class="avatar">JC</div>
+                    <div><strong>John Carter</strong><small>Business Owner</small></div>
+                </div>
+            </header>
+
+            <div class="content">
+                <section class="heading">
+                    <div>
+                        <h1>Customers</h1>
+                        <p class="subtitle">Manage relationships, track customers, and grow your business.</p>
+                    </div>
+
+                </section>
+
+                <section class="stats">
+                    <article class="card">
+                        <div class="stat-top"><span class="stat-label">Total Customers</span><span
+                                class="stat-icon">♙</span></div>
+                        <div class="stat-value" id="totalCustomers">248</div>
+                        <div class="stat-foot">↑ 9.6% <span>vs. last month</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="stat-top"><span class="stat-label">Active Customers</span><span class="stat-icon"
+                                style="background:#e4f8f0;color:#059669">✓</span></div>
+                        <div class="stat-value" id="activeCustomers">186</div>
+                        <div class="stat-foot">↑ 8.2% <span>vs. last month</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="stat-top"><span class="stat-label">VIP Customers</span><span class="stat-icon"
+                                style="background:#fff3d8;color:#b77900">✦</span></div>
+                        <div class="stat-value" id="vipCustomers">32</div>
+                        <div class="stat-foot">↑ 4.3% <span>vs. last month</span></div>
+                    </article>
+                    <article class="card">
+                        <div class="stat-top"><span class="stat-label">New This Month</span><span class="stat-icon"
+                                style="background:#f1eaff;color:#8b5cf6">↗</span></div>
+                        <div class="stat-value" id="newCustomers">24</div>
+                        <div class="stat-foot">↑ 12.1% <span>vs. last month</span></div>
+                    </article>
+                </section>
+
+                <section class="card table-card">
+                    <div class="table-heading">
+                        <div>
+                            <h2>Customer Directory</h2>
+                            <p>View and manage your customer information.</p>
+                        </div>
+                        <div class="tools">
+                            <label class="search"><span>⌕</span><input id="customerSearch" type="search"
+                                    placeholder="Search customers..." aria-label="Search customers"></label>
+                            <select class="filter" id="statusFilter" aria-label="Filter by status">
+                                <option value="all">All Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="VIP">VIP</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>CUSTOMER</th>
+                                    <th>EMAIL ADDRESS</th>
+                                    <th>PHONE</th>
+                                    <th>JOINED</th>
+                                    <th>STATUS</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerRows">
+                                <tr data-status="VIP">
+                                    <td>
+                                        <div class="customer">
+                                            <div class="customer-avatar">AC</div>
+                                            <div>
+                                                <div class="customer-name">Acme Corporation</div>
+                                                <div class="customer-company">Enterprise</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>hello@acmecorp.com</td>
+                                    <td>+1 415 555 0121</td>
+                                    <td>Jan 12, 2025</td>
+                                    <td><span class="status vip-status">✦ VIP</span></td>
+                                    <td><button class="row-action" aria-label="Customer actions">⋯</button></td>
+                                </tr>
+                                <tr data-status="Active">
+                                    <td>
+                                        <div class="customer">
+                                            <div class="customer-avatar" style="background:#e4f8f0;color:#07865c">GT
+                                            </div>
+                                            <div>
+                                                <div class="customer-name">Global Tech Ltd</div>
+                                                <div class="customer-company">Technology</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>contact@globaltech.com</td>
+                                    <td>+1 212 555 0176</td>
+                                    <td>Feb 03, 2025</td>
+                                    <td><span class="status active-status">● Active</span></td>
+                                    <td><button class="row-action" aria-label="Customer actions">⋯</button></td>
+                                </tr>
+                                <tr data-status="Active">
+                                    <td>
+                                        <div class="customer">
+                                            <div class="customer-avatar" style="background:#fff0fb;color:#b832a4">BS
+                                            </div>
+                                            <div>
+                                                <div class="customer-name">Bright Solutions</div>
+                                                <div class="customer-company">Consulting</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>team@brightsolutions.com</td>
+                                    <td>+1 646 555 0192</td>
+                                    <td>Mar 18, 2025</td>
+                                    <td><span class="status active-status">● Active</span></td>
+                                    <td><button class="row-action" aria-label="Customer actions">⋯</button></td>
+                                </tr>
+                                <tr data-status="Inactive">
+                                    <td>
+                                        <div class="customer">
+                                            <div class="customer-avatar" style="background:#fff3d8;color:#b77900">NM
+                                            </div>
+                                            <div>
+                                                <div class="customer-name">NextGen Media</div>
+                                                <div class="customer-company">Marketing</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>info@nextgenmedia.com</td>
+                                    <td>+1 312 555 0145</td>
+                                    <td>Apr 06, 2025</td>
+                                    <td><span class="status inactive-status">○ Inactive</span></td>
+                                    <td><button class="row-action" aria-label="Customer actions">⋯</button></td>
+                                </tr>
+                                <tr data-status="VIP">
+                                    <td>
+                                        <div class="customer">
+                                            <div class="customer-avatar" style="background:#f1eaff;color:#8b5cf6">SD
+                                            </div>
+                                            <div>
+                                                <div class="customer-name">Summit Designs</div>
+                                                <div class="customer-company">Design Studio</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>studio@summitdesigns.com</td>
+                                    <td>+1 512 555 0163</td>
+                                    <td>May 22, 2025</td>
+                                    <td><span class="status vip-status">✦ VIP</span></td>
+                                    <td><button class="row-action" aria-label="Customer actions">⋯</button></td>
+                                </tr>
+                                <tr data-status="Active">
+                                    <td>
+                                        <div class="customer">
+                                            <div class="customer-avatar" style="background:#e6edff;color:#2557c7">CP
+                                            </div>
+                                            <div>
+                                                <div class="customer-name">CloudPeak Systems</div>
+                                                <div class="customer-company">Software</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>support@cloudpeak.io</td>
+                                    <td>+1 206 555 0188</td>
+                                    <td>Jun 14, 2025</td>
+                                    <td><span class="status active-status">● Active</span></td>
+                                    <td><button class="row-action" aria-label="Customer actions">⋯</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="empty" id="emptyState">No customers match your search.</div>
+                    </div>
+                    <div class="table-footer">
+                        <span id="resultCount">Showing 6 sample customers</span>
+                        <div class="pagination"><button class="page-btn current">1</button><button class="page-btn"
+                                data-action="page2">2</button><button class="page-btn" data-action="next">Next
+                                →</button></div>
+                    </div>
+                </section>
+
+                <footer class="footer"><span><strong>BusinessFlow</strong> · Business Management SaaS</span><span>Build
+                        · Manage · Grow</span></footer>
+            </div>
+        </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        const $ = s => document.querySelector(s);
+
+        function getSavedCustomers() {
+            return JSON.parse(localStorage.getItem("businessflow-customers") || "[]");
+        }
+
+        function saveCustomers(customers) {
+            localStorage.setItem("businessflow-customers", JSON.stringify(customers));
+        }
+
+        const $$ = s => [...document.querySelectorAll(s)];
+
+        function showToast(message) {
+            const el = $("#toast");
+            el.textContent = message;
+            el.classList.add("show");
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+        }
+
+        const sidebar = $("#sidebar");
+        $("#menuBtn").addEventListener("click", () => sidebar.classList.toggle("open"));
+        $$(".nav a").forEach(link => link.addEventListener("click", () => sidebar.classList.remove("open")));
+
+        function statusBadge(status) {
+            const badge = document.createElement("span");
+            badge.className = "status " + (status === "VIP" ? "vip-status" : status === "Active" ? "active-status" : "inactive-status");
+            badge.textContent = status === "VIP" ? "✦ VIP" : status === "Active" ? "● Active" : "○ Inactive";
+            return badge;
+        }
+
+        function initials(name) {
+            return name.trim().split(/\s+/).slice(0, 2).map(word => word[0]).join("").toUpperCase();
+        }
+
+        function createCell(text) {
+            const cell = document.createElement("td");
+            cell.textContent = text;
+            return cell;
+        }
+
+        function refreshCounts() {
+            const rows = $$("#customerRows tr");
+            $("#totalCustomers").textContent = 248 + Math.max(0, rows.length - 6);
+            $("#activeCustomers").textContent = 186 + rows.filter(row => row.dataset.status === "Active" && row.dataset.new === "true").length;
+            $("#vipCustomers").textContent = 32 + rows.filter(row => row.dataset.status === "VIP" && row.dataset.new === "true").length;
+            $("#newCustomers").textContent = 24 + rows.filter(row => row.dataset.new === "true").length;
+        }
+
+
+        function filterCustomers() {
+            const query = $("#customerSearch").value.trim().toLowerCase();
+            const status = $("#statusFilter").value;
+            let visible = 0;
+
+            $$("#customerRows tr").forEach(row => {
+                const matchesText = row.textContent.toLowerCase().includes(query);
+                const matchesStatus = status === "all" || row.dataset.status === status;
+                const show = matchesText && matchesStatus;
+                row.hidden = !show;
+                if (show) visible++;
+            });
+
+            $("#emptyState").style.display = visible ? "none" : "block";
+            $("#resultCount").textContent = `Showing ${visible} customer${visible === 1 ? "" : "s"}`;
+        }
+
+        $("#customerSearch").addEventListener("input", filterCustomers);
+        $("#statusFilter").addEventListener("change", filterCustomers);
+
+
+        $("#customerRows").addEventListener("click", event => {
+            const menuAction = event.target.closest("[data-action='edit-customer'], [data-action='delete-customer']");
+
+            if (menuAction) {
+                event.stopPropagation();
+
+                const row = menuAction.closest("tr");
+
+                if (menuAction.dataset.action === "edit-customer") {
+                    const customerId = row.dataset.customerId;
+                    const savedCustomers = getSavedCustomers();
+                    const customer = savedCustomers.find(item => item.id === customerId);
+
+                    if (!customer) {
+                        showToast("This customer cannot be edited yet.");
+                        return;
+                    }
+
+                    editingCustomerId = customerId;
+
+                    $("#customerForm").elements.namedItem("name").value = customer.name;
+                    $("#customerForm").elements.namedItem("email").value = customer.email;
+                    $("#customerForm").elements.namedItem("phone").value = customer.phone;
+                    $("#customerForm").elements.namedItem("company").value = customer.company;
+                    $("#customerForm").elements.namedItem("status").value = customer.status;
+
+                    menu.remove();
+                    openModal();
+                }
+
+                if (menuAction.dataset.action === "delete-customer") {
+                    showToast("Delete customer: " + row.querySelector(".customer-name").textContent);
+                }
+
+                return;
+            }
+
+            const button = event.target.closest(".row-action");
+            if (!button) return;
+
+            const row = button.closest("tr");
+            const name = row.querySelector(".customer-name").textContent;
+
+            const existingMenu = row.querySelector(".customer-action-menu");
+            if (existingMenu) {
+                existingMenu.remove();
+                return;
+            }
+
+            $$(".customer-action-menu").forEach(menu => menu.remove());
+
+            const menu = document.createElement("div");
+            menu.className = "customer-action-menu";
+
+            const editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            editButton.dataset.action = "edit-customer";
+
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.dataset.action = "delete-customer";
+
+            menu.append(editButton, deleteButton);
+            button.parentElement.append(menu);
+        });
+
+
+        document.addEventListener("click", event => {
+            const action = event.target.closest("[data-action]");
+            if (!action) return;
+            if (action.dataset.action === "settings") {
+                event.preventDefault();
+                showToast("Settings can be added as a future dashboard feature.");
+            }
+            if (["page2", "next"].includes(action.dataset.action)) {
+                showToast("This demo currently displays the first page of customers.");
+            }
+        });
+
+
+        function restoreSavedCustomers() {
+            const savedCustomers = getSavedCustomers();
+
+            savedCustomers.forEach(data => {
+                const row = document.createElement("tr");
+                row.dataset.status = data.status;
+                row.dataset.customerId = data.id;
+                row.dataset.new = "true";
+
+                const customerCell = document.createElement("td");
+                const customer = document.createElement("div");
+                customer.className = "customer";
+
+                const avatar = document.createElement("div");
+                avatar.className = "customer-avatar";
+                avatar.textContent = initials(data.name);
+
+                const details = document.createElement("div");
+                const name = document.createElement("div");
+                name.className = "customer-name";
+                name.textContent = data.name;
+
+                const company = document.createElement("div");
+                company.className = "customer-company";
+                company.textContent = data.company;
+
+                details.append(name, company);
+                customer.append(avatar, details);
+                customerCell.append(customer);
+
+                row.append(
+                    customerCell,
+                    createCell(data.email),
+                    createCell(data.phone),
+                    createCell(new Date().toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric"
+                    }))
+                );
+
+                const statusCell = document.createElement("td");
+                statusCell.append(statusBadge(data.status));
+                row.append(statusCell);
+
+                const actionCell = document.createElement("td");
+                const actionButton = document.createElement("button");
+                actionButton.className = "row-action";
+                actionButton.textContent = "⋯";
+                actionButton.setAttribute("aria-label", "Customer actions");
+                actionCell.append(actionButton);
+                row.append(actionCell);
+
+                $("#customerRows").prepend(row);
+            });
+        }
+
+        restoreSavedCustomers();
+        refreshCounts();
+
+    </script>
+</body>
+
+</html>
